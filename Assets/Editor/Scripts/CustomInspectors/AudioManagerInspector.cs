@@ -3,7 +3,6 @@ using UnityEditor;
 using System.Collections;
 using Base.Audio;
 using Base.CustomEditors;
-using UnityEditorInternal;
 using System.Collections.Generic;
 
 namespace Base.CustomEditors.Inspectors {
@@ -12,6 +11,7 @@ namespace Base.CustomEditors.Inspectors {
     public class AudioManagerInspector : Editor {
 
         private AudioManager myScript;
+
         public override void OnInspectorGUI () {
             
             myScript = (AudioManager)target;
@@ -25,17 +25,30 @@ namespace Base.CustomEditors.Inspectors {
 
             if (GUILayout.Button("Add New")) {
 
-                myScript.audioClips.Add(new AudioListData());
+                myScript.audioList.Add(new AudioListData());
 
             }
 
-            for (int i = 0; i < myScript.audioClips.Count; i++) {
+            for (int i = 0; i < myScript.audioList.Count; i++) {
 
-                DrawItem(myScript.audioClips[i]);
+                DrawItem(myScript.audioList[i]);
 
             }
+
+            EditorGUILayout.Space();
+
+            DrawVolumePanel();
 
         }
+
+        private void DrawVolumePanel () {
+
+            Draw.TitleField("Audio Volume");
+            EditorGUILayout.HelpBox("Audio Volumes are handled by the Audio Mixer itself." +
+                " \nLocated at : [Assets/Files/Audio]", MessageType.Info);
+
+        }
+
 
         private void DrawItem(AudioListData _data) {
 
@@ -43,8 +56,10 @@ namespace Base.CustomEditors.Inspectors {
 
             //----Item Properties---------------------------------------------------------->
             EditorGUILayout.BeginVertical();
-            _data.identifier = Draw.DrawTextField(_data.identifier, "Identifier Name");
             _data.audioObject = Draw.DrawGameObjectField(_data.audioObject, "Audio Prefab");
+            if(_data.audioObject != null) {
+                EditorGUILayout.LabelField("Identifier: " + _data.audioObject.name);
+            }
             EditorGUILayout.EndVertical();
             //----------------------------------------------------------------------------->
 
@@ -52,23 +67,23 @@ namespace Base.CustomEditors.Inspectors {
             EditorGUILayout.BeginVertical();
             if (GUILayout.Button("X", GUILayout.Width(100))) {
 
-                myScript.audioClips.Remove(_data);
+                myScript.audioList.Remove(_data);
 
             }
 
             EditorGUILayout.BeginHorizontal();
 
             if (GUILayout.Button("^", GUILayout.Width(50))) {
-                int index = myScript.audioClips.IndexOf(_data);
+                int index = myScript.audioList.IndexOf(_data);
                 if (index != 0) {
-                    SwapItems(myScript.audioClips, index, index - 1);
+                    SwapItems(myScript.audioList, index, index - 1);
                 }
             }
 
             if (GUILayout.Button("V", GUILayout.Width(50))) {
-                int index = myScript.audioClips.IndexOf(_data);
-                if(index != myScript.audioClips.Count - 1) {
-                    SwapItems(myScript.audioClips, index, index + 1);
+                int index = myScript.audioList.IndexOf(_data);
+                if(index != myScript.audioList.Count - 1) {
+                    SwapItems(myScript.audioList, index, index + 1);
                 }
             }
 
@@ -92,8 +107,5 @@ namespace Base.CustomEditors.Inspectors {
         }
 
     }
-
-   
-
 
 }
