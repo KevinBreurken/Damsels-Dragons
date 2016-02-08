@@ -14,7 +14,7 @@ namespace Base.Audio {
         /// <summary>
         /// List of all AudioObjects with its identifier.
         /// </summary>
-        public List<AudioListData> audioList;
+        public List<ListData> audioList;
 
         /// <summary>
         /// If the AudioObjects are visible in the hierarchy.
@@ -89,9 +89,9 @@ namespace Base.Audio {
 
             for (int i = 0; i < audioList.Count; i++) {
  
-                if(_name == audioList[i].audioObject.name) {
+				if(_name == audioList[i].listedObject.name) {
 
-                    return audioList[i].audioObject;
+					return audioList[i].listedObject;
 
                 }
 
@@ -107,19 +107,6 @@ namespace Base.Audio {
             instance = null;
 
         }
-
-    }
-
-    /// <summary>
-    /// A structure for holding AudioObjects.
-    /// </summary>
-    [System.Serializable]
-    public struct AudioListData {
-
-        /// <summary>
-        /// The held AudioObject (as GameObject).
-        /// </summary>
-        public GameObject audioObject;
 
     }
 

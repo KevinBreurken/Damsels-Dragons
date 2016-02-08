@@ -3,6 +3,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEditor;
 using System.Reflection;
+using Base.Audio;
+using Base.Management;
+using System.Collections.Generic;
+
 
 namespace Base.CustomEditors {
 
@@ -64,17 +68,32 @@ namespace Base.CustomEditors {
 
         }
 
-        public static GameObject DrawGameObjectField(GameObject _object, string _text) {
+		public static GameObject DrawGameObjectField(GameObject _object, string _text,bool _allowSceneObjects) {
 
             EditorGUILayout.BeginHorizontal();
 
             EditorGUILayout.LabelField(_text);
-            _object = (GameObject)EditorGUILayout.ObjectField(_object, typeof(GameObject),false);
+			_object = (GameObject)EditorGUILayout.ObjectField(_object, typeof(GameObject),_allowSceneObjects);
 
             EditorGUILayout.EndHorizontal();
             return _object;
 
         }
+
+	}
+
+	public class Functions{
+		
+		/// <summary>
+		/// Swaps items from the list with each other.
+		/// </summary>
+		public static void SwapItems (List<ListData> list, int indexA, int indexB) {
+
+			ListData tmp = list[indexA];
+			list[indexA] = list[indexB];
+			list[indexB] = tmp;
+
+		}
 
 	}
 

@@ -6,7 +6,9 @@ namespace Base { }
 /// <summary>
 /// Namespace for Management related Classes.
 /// </summary>
-namespace Base.Management { }
+namespace Base.Management { 
+
+}
 
 /// <summary>
 /// Namespace for Audio related Classes.

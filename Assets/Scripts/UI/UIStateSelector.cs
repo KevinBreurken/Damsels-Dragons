@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Base.UI.States;
+using Base.Management;
+using System.Collections.Generic;
 
 namespace Base.UI {
 
@@ -38,7 +41,7 @@ namespace Base.UI {
         /// <summary>
         /// All UIStates that are being used.
         /// </summary>
-        public BaseUIState[] UIStates;
+		public List<ListData> UIStates;
 
         /// <summary>
         /// The current UIState that is active.
@@ -54,9 +57,9 @@ namespace Base.UI {
 
         void Awake () {
             //Disable all UIStates.
-            for (int i = 0; i < UIStates.Length; i++) {
+			for (int i = 0; i < UIStates.Count; i++) {
 
-                UIStates[i].gameObject.SetActive(false);
+				UIStates[i].listedObject.SetActive(false);
 
             }
 
@@ -65,8 +68,11 @@ namespace Base.UI {
         }
 
         private void SetUIState(BaseUIState _nextState) {
-            string nextString = _nextState.GetType().ToString().Remove(0, 8);
+			
+			string nextString = _nextState.GetType().ToString().Remove(0,15);
+			Debug.Log(nextString);
             StartCoroutine(SetUIState(nextString));
+
         }
 
         /// <summary>
@@ -76,12 +82,12 @@ namespace Base.UI {
         public IEnumerator SetUIState(string _nextState) {
 
             //Get the next state.
-            for (int i = 0; i < UIStates.Length; i++) {
-
-                if (UIStates[i].GetType().ToString() == "Base.UI." + _nextState) {
+			for (int i = 0; i < UIStates.Count; i++) {
+				
+				if (UIStates[i].listedObject.GetComponent<BaseUIState>().GetType().ToString() == "Base.UI.States." + _nextState) {
                   
-                    nextUIState = UIStates[i];
-
+					nextUIState = UIStates[i].listedObject.GetComponent<BaseUIState>();
+					Debug.Log(nextUIState);
                 }
 
             }

@@ -13,10 +13,6 @@ namespace Base.UI.States {
         // Update is called once per frame
         void Update () {
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                StartCoroutine(UIStateSelector.Instance.SetUIState("MenuUIState"));
-            }
-
         }
     }
 

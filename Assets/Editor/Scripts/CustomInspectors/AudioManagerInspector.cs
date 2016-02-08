@@ -2,6 +2,7 @@
 using UnityEditor;
 using System.Collections;
 using Base.Audio;
+using Base.Management;
 using Base.CustomEditors;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ namespace Base.CustomEditors.Inspectors {
 
             if (GUILayout.Button("Add New")) {
 
-                myScript.audioList.Add(new AudioListData());
+                myScript.audioList.Add(new ListData());
 
             }
 
@@ -50,15 +51,15 @@ namespace Base.CustomEditors.Inspectors {
         }
 
 
-        private void DrawItem(AudioListData _data) {
+        private void DrawItem(ListData _data) {
 
             EditorGUILayout.BeginHorizontal("Box");
 
             //----Item Properties---------------------------------------------------------->
             EditorGUILayout.BeginVertical();
-            _data.audioObject = Draw.DrawGameObjectField(_data.audioObject, "Audio Prefab");
-            if(_data.audioObject != null) {
-                EditorGUILayout.LabelField("Identifier: " + _data.audioObject.name);
+			_data.listedObject = Draw.DrawGameObjectField(_data.listedObject, "Audio Prefab",false);
+			if(_data.listedObject != null) {
+				EditorGUILayout.LabelField("Identifier: " + _data.listedObject.name);
             }
             EditorGUILayout.EndVertical();
             //----------------------------------------------------------------------------->
@@ -76,14 +77,14 @@ namespace Base.CustomEditors.Inspectors {
             if (GUILayout.Button("^", GUILayout.Width(50))) {
                 int index = myScript.audioList.IndexOf(_data);
                 if (index != 0) {
-                    SwapItems(myScript.audioList, index, index - 1);
+					Functions.SwapItems(myScript.audioList, index, index - 1);
                 }
             }
 
             if (GUILayout.Button("V", GUILayout.Width(50))) {
                 int index = myScript.audioList.IndexOf(_data);
                 if(index != myScript.audioList.Count - 1) {
-                    SwapItems(myScript.audioList, index, index + 1);
+					Functions.SwapItems(myScript.audioList, index, index + 1);
                 }
             }
 
@@ -92,17 +93,6 @@ namespace Base.CustomEditors.Inspectors {
             //------------------------------------------------------------------------------>
            
             EditorGUILayout.EndHorizontal();
-
-        }
-
-        /// <summary>
-        /// Swaps items from the list with each other.
-        /// </summary>
-        public void SwapItems (List<AudioListData> list, int indexA, int indexB) {
-
-            AudioListData tmp = list[indexA];
-            list[indexA] = list[indexB];
-            list[indexB] = tmp;
 
         }
 
