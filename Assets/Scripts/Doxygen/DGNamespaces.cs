@@ -1,4 +1,9 @@
 ﻿/// <summary>
+/// Namespace for the project itself.
+/// </summary>
+namespace Base { }
+
+/// <summary>
 /// Namespace for Management related Classes.
 /// </summary>
 namespace Base.Management { }
@@ -9,6 +14,13 @@ namespace Base.Management { }
 namespace Base.Audio { }
 
 /// <summary>
-/// Namespace for the project itself.
+/// Namespace for User Interface related Classes.
 /// </summary>
-namespace Base { }
+namespace Base.UI {}
+
+/// <summary>
+/// Namespace for User Interface State related Classes.
+/// </summary>
+namespace Base.UI.States { }
+
+
