@@ -6,9 +6,7 @@ namespace Base { }
 /// <summary>
 /// Namespace for Management related Classes.
 /// </summary>
-namespace Base.Management { 
-
-}
+namespace Base.Management { }
 
 /// <summary>
 /// Namespace for Audio related Classes.
@@ -16,13 +14,23 @@ namespace Base.Management {
 namespace Base.Audio { }
 
 /// <summary>
-/// Namespace for User Interface related Classes.
+/// Namespace for UI related Classes.
 /// </summary>
 namespace Base.UI {}
 
 /// <summary>
-/// Namespace for User Interface State related Classes.
+/// Namespace for UI State related Classes.
 /// </summary>
-namespace Base.UI.States { }
+namespace Base.UI.State { }
+
+/// <summary>
+/// Namespace for Control (Input) related Classes.
+/// </summary>
+namespace Base.Control { }
+
+/// <summary>
+/// Namespace for Control (Input) Method related classes.
+/// </summary>
+namespace Base.Control.Method { }
 
 

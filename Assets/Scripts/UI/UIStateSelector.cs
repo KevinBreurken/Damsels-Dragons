@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Base.UI.States;
+using Base.UI.State;
 using Base.Management;
 using System.Collections.Generic;
 
@@ -67,10 +67,13 @@ namespace Base.UI {
             
         }
 
-        private void SetUIState(BaseUIState _nextState) {
+        /// <summary>
+        /// Sets the UI to the given state.
+        /// </summary>
+        /// <param name="_nextState">The next state.</param>
+        public void SetUIState(BaseUIState _nextState) {
 			
 			string nextString = _nextState.GetType().ToString().Remove(0,15);
-			Debug.Log(nextString);
             StartCoroutine(SetUIState(nextString));
 
         }

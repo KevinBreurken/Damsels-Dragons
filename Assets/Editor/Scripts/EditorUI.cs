@@ -55,6 +55,21 @@ namespace Base.CustomEditors {
 
         }
 
+        /// <summary>
+        /// Draws a float field with text next to it.
+        /// </summary>
+        public static float FloatField (float _value, string _text) {
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField(_text);
+            _value = EditorGUILayout.FloatField(_value);
+
+            EditorGUILayout.EndHorizontal();
+            return _value;
+
+        }
+
         public static string DrawTextField(string _newText, string _text) {
 
             EditorGUILayout.BeginHorizontal();

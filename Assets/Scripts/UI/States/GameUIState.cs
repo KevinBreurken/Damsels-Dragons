@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Base.UI.States {
+namespace Base.UI.State {
 
+    /// <summary>
+    /// Not yet finished. acts as dummy.
+    /// </summary>
     public class GameUIState : BaseUIState {
 
         // Use this for initialization
