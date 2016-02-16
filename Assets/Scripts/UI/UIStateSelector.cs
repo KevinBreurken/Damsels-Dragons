@@ -47,7 +47,15 @@ namespace Base.UI {
         /// The current UIState that is active.
         /// </summary>
         public BaseUIState currentUIState;
+
+        /// <summary>
+        /// The UIState that will be entered after the current active state is left.
+        /// </summary>
         public BaseUIState nextUIState;
+
+        /// <summary>
+        /// The previous UIState that was used.
+        /// </summary>
         public BaseUIState previousUIState;
 
         /// <summary>
@@ -63,40 +71,41 @@ namespace Base.UI {
 
             }
 
-            SetUIState(startUIState);
+            StartCoroutine(SetUIState(startUIState));
             
         }
 
-        /// <summary>
-        /// Sets the UI to the given state.
-        /// </summary>
-        /// <param name="_nextState">The next state.</param>
-        public void SetUIState(BaseUIState _nextState) {
-			
-			string nextString = _nextState.GetType().ToString().Remove(0,15);
-            StartCoroutine(SetUIState(nextString));
+        public void SetUIState (string _nextState) {
 
-        }
-
-        /// <summary>
-        /// Sets the UI to the given state.
-        /// </summary>
-        /// <param name="_nextState">The name of the next state. (as its Class name)</param>
-        public IEnumerator SetUIState(string _nextState) {
-
+            BaseUIState foundUIState = null;
             //Get the next state.
-			for (int i = 0; i < UIStates.Count; i++) {
-				
-				if (UIStates[i].listedObject.GetComponent<BaseUIState>().GetType().ToString() == "Base.UI.States." + _nextState) {
-                  
-					nextUIState = UIStates[i].listedObject.GetComponent<BaseUIState>();
-					Debug.Log(nextUIState);
+            for (int i = 0; i < UIStates.Count; i++) {
+
+              
+                if (UIStates[i].listedObject.GetComponent<BaseUIState>().GetType().ToString() == "Base.UI.State." + _nextState) {
+
+                    foundUIState = UIStates[i].listedObject.GetComponent<BaseUIState>();
+
                 }
 
             }
 
+            if(foundUIState == null) {
+
+                Debug.LogError("[ERROR]: UI state [" + _nextState + "] not found.");
+
+            }
+
+            StartCoroutine(SetUIState(foundUIState));
+
+        }
+
+        public IEnumerator SetUIState (BaseUIState _nextState) {
+
+            nextUIState = _nextState;
+
             if (currentUIState != null) {
-        
+
                 yield return StartCoroutine(currentUIState.Exit());
                 currentUIState.Disable();
                 previousUIState = currentUIState;
@@ -104,7 +113,7 @@ namespace Base.UI {
             }
 
             currentUIState = nextUIState;
-            nextUIState.Enter();
+            currentUIState.Enter();
             nextUIState = null;
 
         }

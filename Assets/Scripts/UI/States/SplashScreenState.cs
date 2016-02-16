@@ -29,55 +29,83 @@ namespace Base.UI.State {
         /// <summary>
         /// How long it takes before the screen will enter the next state. (after fading out)
         /// </summary>
-        public float timeTilleStateSwitch;
+        public float timeTillStateSwitch;
 
         /// <summary>
         /// The UI state that will be entered after this UI state is finished.
         /// </summary>
         public BaseUIState nextUIState;
 
-        private CanvasGroup canvasGroup;
+        private bool forceNextScreen = false;
 
-        void Awake () {
-			
-			canvasGroup = GetComponent<CanvasGroup>();
-			canvasGroup.alpha = 0;
+        public override void Update () {
 
-		}
+            if (Input.anyKey) {
+
+                if (!forceNextScreen) {
+                    
+                    ForceToNextScreen();
+                    
+                }
+
+            }
+
+        }
 
 		public override void Enter () {
 
 			base.Enter ();
-            canvasGroup.DOFade(1, fadeInTime).OnComplete(OnFadedIn);
+            Effect.EffectManager.Instance.FadeEffect.Fade(0, fadeInTime);
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished += OnFadedIn;
 
-		}
+        }
 
         private void OnFadedIn () {
 
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedIn;
             StartCoroutine(WaitToFadeOut());
+
+        }
+
+        IEnumerator WaitToFadeOut () {
+
+            yield return new WaitForSeconds(timeTillFadeOutTime);
+            Effect.EffectManager.Instance.FadeEffect.Fade(1, fadeOutTime);
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished += OnFadedOut;
 
         }
 
         private void OnFadedOut () {
 
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedOut;
             StartCoroutine(WaitToLeaveState());
 
         }
 
-		IEnumerator WaitToFadeOut() {
-			
-			yield return new WaitForSeconds(timeTillFadeOutTime);
-            canvasGroup.DOFade(0, 2).OnComplete(OnFadedOut);
-
-		}
-
         IEnumerator WaitToLeaveState () {
 
-            yield return new WaitForSeconds(timeTilleStateSwitch);
-            UIStateSelector.Instance.SetUIState(nextUIState);
+            //safety check to remove the event listeners.
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedOut;
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedIn;
+
+            yield return new WaitForSeconds(timeTillStateSwitch);
+            StartCoroutine(UIStateSelector.Instance.SetUIState(nextUIState));
 
         }
 			
+        private void ForceToNextScreen () {
+
+            StopAllCoroutines();
+            forceNextScreen = true;
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedOut;
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedIn;
+
+            Effect.EffectManager.Instance.FadeEffect.StopFade();
+            Effect.EffectManager.Instance.FadeEffect.Fade(1, 1.35f);
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished += OnFadedOut;
+
+        }
+
 	}
 
 }

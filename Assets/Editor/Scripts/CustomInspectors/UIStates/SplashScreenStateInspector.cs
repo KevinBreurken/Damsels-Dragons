@@ -29,10 +29,10 @@ namespace Base.CustomEditors.Inspectors {
             myScript.fadeInTime = Draw.FloatField(myScript.fadeInTime, "Fade-in Time");
             myScript.fadeOutTime = Draw.FloatField(myScript.fadeOutTime, "Fade-out Time");
             myScript.timeTillFadeOutTime = Draw.FloatField(myScript.timeTillFadeOutTime, "Time until screen fades out.");
-            myScript.timeTilleStateSwitch = Draw.FloatField(myScript.timeTilleStateSwitch, "Time until screen state is switched.");
+            myScript.timeTillStateSwitch = Draw.FloatField(myScript.timeTillStateSwitch, "Time until screen state is switched.");
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Total SplashScreen time: " + (myScript.timeTilleStateSwitch + myScript.timeTillFadeOutTime +
+            EditorGUILayout.LabelField("Total SplashScreen time: " + (myScript.timeTillStateSwitch + myScript.timeTillFadeOutTime +
                 myScript.fadeOutTime + myScript.fadeInTime) + " Seconds total.");
         }
 

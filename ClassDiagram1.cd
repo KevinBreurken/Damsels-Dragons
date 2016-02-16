@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Base.Control.Method.BaseInputMethod" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAEAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Input\BaseInputMethod.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base.Control.Method.KeyboardInputMethod" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Input\Methods\KeyboardInputMethod.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base.UI.UIStateSelector" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAABAAEAAQAAQAAAAgFA=</HashCode>
+      <FileName>Assets\Scripts\UI\UIStateSelector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base.UI.State.BaseUIState" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAEAAAAIAAgAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\BaseUIState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base.UI.State.GameUIState" Collapsed="true">
+    <Position X="6.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\States\GameUIState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base.UI.State.MenuUIState" Collapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\States\MenuUIState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base.UI.State.SplashScreenState" Collapsed="true">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAAAAAAAAAACACAAAAAAAAAAAAEAAAKAAAQQAgACEA=</HashCode>
+      <FileName>Assets\Scripts\UI\States\SplashScreenState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

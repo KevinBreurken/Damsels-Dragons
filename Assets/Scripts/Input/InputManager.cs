@@ -49,7 +49,7 @@ namespace Base.Control {
         /// </summary>
         public BaseInputMethod startInputMethod;
 
-        private BaseInputMethod currentlyUsedInput;
+        private BaseInputMethod currentlyUsedInputMethod;
 
         void Awake () {
 
@@ -67,7 +67,7 @@ namespace Base.Control {
 
                 if(inputMethods[i].listedObject.name == _inputName) {
 
-                    currentlyUsedInput = inputMethods[i].listedObject.GetComponent<BaseInputMethod>();
+                    currentlyUsedInputMethod = inputMethods[i].listedObject.GetComponent<BaseInputMethod>();
                     break;
 
                 }
