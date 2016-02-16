@@ -89,7 +89,7 @@ namespace Base.UI.State {
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedIn;
 
             yield return new WaitForSeconds(timeTillStateSwitch);
-            StartCoroutine(UIStateSelector.Instance.SetUIState(nextUIState));
+            UIStateSelector.Instance.SetState("MenuUIState");
 
         }
 			

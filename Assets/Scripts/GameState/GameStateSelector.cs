@@ -1,36 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Base.UI.State;
 using Base.Management;
 using System.Collections.Generic;
 
-namespace Base.UI {
-
+namespace Base.Game {
 
     /// <summary>
-    /// Switches UIStates.
+    /// Switches Game State.
     /// </summary>
-    public class UIStateSelector : BaseStateSelector {
+    public class GameStateSelector : BaseStateSelector {
 
-        protected static UIStateSelector instance = null;
+        protected static GameStateSelector instance = null;
 
         /// <summary>
         /// Static reference of the State Selector.
         /// </summary>
-        public static UIStateSelector Instance {
+        public static GameStateSelector Instance {
 
             get {
 
                 if (instance == null) {
 
-                    instance = FindObjectOfType(typeof(UIStateSelector)) as UIStateSelector;
+                    instance = FindObjectOfType(typeof(GameStateSelector)) as GameStateSelector;
 
                 }
 
                 if (instance == null) {
 
-                    GameObject go = new GameObject("UIStateSelector");
-                    instance = go.AddComponent(typeof(UIStateSelector)) as UIStateSelector;
+                    GameObject go = new GameObject("GameStateSelector");
+                    instance = go.AddComponent(typeof(GameStateSelector)) as GameStateSelector;
 
                 }
 
@@ -43,15 +41,14 @@ namespace Base.UI {
         /// <summary>
         /// The first UIState that will be set active.
         /// </summary>
-        public BaseUIState startUIState;
+        public BaseGameState startGameState;
 
         public override void Awake () {
 
             base.Awake();
-            StartCoroutine(SetState(startUIState));
+            StartCoroutine(SetState(startGameState));
 
         }
-
     }
 
 }

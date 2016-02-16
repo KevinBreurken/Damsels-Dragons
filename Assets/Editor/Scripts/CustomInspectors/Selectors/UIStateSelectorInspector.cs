@@ -10,7 +10,7 @@ namespace Base.CustomEditors.Inspectors {
 
 	[CustomEditor(typeof(UIStateSelector))]
 	public class UIStateSelectorInspector : Editor {
-
+        
 		private UIStateSelector myScript;
 
 		public override void OnInspectorGUI () {
@@ -25,13 +25,13 @@ namespace Base.CustomEditors.Inspectors {
 			EditorGUILayout.EndHorizontal();
 			if (GUILayout.Button("Add New")) {
 
-				myScript.UIStates.Add(new ListData());
+				myScript.States.Add(new ListData());
 
 			}
 
-			for (int i = 0; i < myScript.UIStates.Count; i++) {
+			for (int i = 0; i < myScript.States.Count; i++) {
 
-				DrawItem(myScript.UIStates[i]);
+				DrawItem(myScript.States[i]);
 
 			}
 
@@ -46,7 +46,7 @@ namespace Base.CustomEditors.Inspectors {
 			_data.listedObject = Draw.DrawGameObjectField(_data.listedObject, "UI State Object",true);
 			if(_data.listedObject != null) {
 				
-				string newstring = _data.listedObject.GetComponent<BaseUIState>().GetType().ToString().Remove(0, 15);
+				string newstring = _data.listedObject.GetComponent<BaseUIState>().GetType().ToString().Remove(0, 14);
 				EditorGUILayout.LabelField("Identifier: " +  newstring);
 
 			}
@@ -57,23 +57,23 @@ namespace Base.CustomEditors.Inspectors {
 			EditorGUILayout.BeginVertical();
 			if (GUILayout.Button("X", GUILayout.Width(100))) {
 
-				myScript.UIStates.Remove(_data);
+				myScript.States.Remove(_data);
 
 			}
 
 			EditorGUILayout.BeginHorizontal();
 
 			if (GUILayout.Button("^", GUILayout.Width(50))) {
-				int index = myScript.UIStates.IndexOf(_data);
+				int index = myScript.States.IndexOf(_data);
 				if (index != 0) {
-					Functions.SwapItems(myScript.UIStates, index, index - 1);
+					Functions.SwapItems(myScript.States, index, index - 1);
 				}
 			}
 
 			if (GUILayout.Button("V", GUILayout.Width(50))) {
-				int index = myScript.UIStates.IndexOf(_data);
-				if(index != myScript.UIStates.Count - 1) {
-					Functions.SwapItems(myScript.UIStates, index, index + 1);
+				int index = myScript.States.IndexOf(_data);
+				if(index != myScript.States.Count - 1) {
+					Functions.SwapItems(myScript.States, index, index + 1);
 				}
 			}
 
@@ -84,7 +84,7 @@ namespace Base.CustomEditors.Inspectors {
 			EditorGUILayout.EndHorizontal();
 
 		}
-
+        
 	}
 
 
