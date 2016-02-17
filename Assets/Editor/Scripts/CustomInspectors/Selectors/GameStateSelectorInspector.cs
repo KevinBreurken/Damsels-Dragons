@@ -45,7 +45,7 @@ namespace Base.CustomEditors.Inspectors {
             _data.listedObject = Draw.DrawGameObjectField(_data.listedObject, "UI State Object", true);
             if (_data.listedObject != null) {
 
-                string newstring = _data.listedObject.GetComponent<BaseGameState>().GetType().ToString().Remove(0, 14);
+                string newstring = _data.listedObject.GetComponent<BaseGameState>().GetType().ToString().Remove(0, 10);
                 EditorGUILayout.LabelField("Identifier: " + newstring);
 
             }

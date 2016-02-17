@@ -8,9 +8,19 @@ namespace Base.UI.State {
     /// </summary>
     public class MenuUIState : BaseUIState {
 
+        public UIButton startButton;
+        public UIButton optionsButton;
+        public UIButton creditsButton;
+        public UIButton quitButton;
+
         public override void Enter () {
 
             base.Enter();
+
+            startButton.Show();
+            //optionsButton.Show();
+            //creditsButton.Show();
+            //quitButton.Show();
 
         }
 
