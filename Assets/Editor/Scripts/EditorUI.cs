@@ -6,7 +6,7 @@ using System.Reflection;
 using Base.Audio;
 using Base.Management;
 using System.Collections.Generic;
-
+using DG.Tweening;
 
 namespace Base.CustomEditors {
 
@@ -70,6 +70,18 @@ namespace Base.CustomEditors {
 
         }
 
+        public static Ease DrawEaseField (Ease _ease, string _text) {
+
+            EditorGUILayout.BeginHorizontal();
+
+            EditorGUILayout.LabelField(_text);
+            _ease = (Ease)EditorGUILayout.EnumPopup(_ease);
+
+            EditorGUILayout.EndHorizontal();
+
+            return _ease;
+        }
+
         public static string DrawTextField(string _newText, string _text) {
 
             EditorGUILayout.BeginHorizontal();
@@ -81,6 +93,17 @@ namespace Base.CustomEditors {
 
             return _newText;
 
+        }
+
+        public static Vector3 DrawVector2Field(Vector2 _vector2,string _text) {
+
+            EditorGUILayout.BeginHorizontal();
+
+            _vector2 = EditorGUILayout.Vector2Field(_text, _vector2);
+
+            EditorGUILayout.EndHorizontal();
+
+            return _vector2;
         }
 
 		public static GameObject DrawGameObjectField(GameObject _object, string _text,bool _allowSceneObjects) {
@@ -111,6 +134,10 @@ namespace Base.CustomEditors {
 		}
 
 	}
+
+    public class UIFunctions {
+
+    }
 
 }
 

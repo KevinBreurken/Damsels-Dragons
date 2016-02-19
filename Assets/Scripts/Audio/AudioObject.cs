@@ -121,4 +121,11 @@ namespace Base.Audio {
 
     }
 
+    [System.Serializable]
+    public class AudioObjectHolder {
+        public GameObject objectPrefab;
+        [HideInInspector]
+        public AudioObject audioObject;
+    }
+
 }

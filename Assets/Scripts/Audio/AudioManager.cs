@@ -66,6 +66,18 @@ namespace Base.Audio {
 
         }
 
+        public AudioObject CreateAudioInstance(GameObject _object) {
+            GameObject audioGameObject = Instantiate(_object);
+            Debug.Log(audioGameObject);
+            audioGameObject.hideFlags = hideAudioInHierarchy ? HideFlags.HideInHierarchy : HideFlags.None;
+            audioGameObject.name = "[AudioObject] " + _object.name;
+            audioGameObject.transform.parent = this.transform;
+
+            AudioObject audioObject = audioGameObject.GetComponent<AudioObject>();
+
+            return audioObject;
+        }
+
         /// <summary>
         /// Creates a new ObjectPool with AudioObjects.
         /// </summary>
@@ -98,6 +110,23 @@ namespace Base.Audio {
             }
 
             Debug.LogError("AUDIOCLIP: " + _name + " NOT FOUND.");
+            return null;
+
+        }
+
+        private GameObject GetClipByAudioObject(AudioObject _object) {
+
+            for (int i = 0; i < audioList.Count; i++) {
+
+                if (_object == audioList[i].listedObject.GetComponent<AudioObject>()) {
+
+                    return audioList[i].listedObject;
+
+                }
+
+            }
+
+            Debug.LogError("AUDIOCLIP: " + _object + " NOT FOUND.");
             return null;
 
         }
