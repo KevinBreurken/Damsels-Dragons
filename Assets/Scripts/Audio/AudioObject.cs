@@ -80,7 +80,15 @@ namespace Base.Audio {
         public void PlayOnPosition (Transform _parent) {
 
             gameObject.transform.parent = _parent;
+            gameObject.transform.position = new Vector3(0, 0, 0);
             Play();
+
+        }
+
+        public void SetOnPosition(Transform _parent) {
+
+            gameObject.transform.parent = _parent;
+            gameObject.transform.position = new Vector3(0, 0, 0);
 
         }
 
@@ -95,7 +103,11 @@ namespace Base.Audio {
 
             }
 
-            source.pitch = 1.0f + Random.Range(randomPitchRange.x, randomPitchRange.y);
+            if (randomPitch) {
+
+                source.pitch = 1.0f + Random.Range(randomPitchRange.x, randomPitchRange.y);
+
+            }
 
             source.Play();
             StartCoroutine(WaitForClip());
@@ -119,13 +131,6 @@ namespace Base.Audio {
 
         }
 
-    }
-
-    [System.Serializable]
-    public class AudioObjectHolder {
-        public GameObject objectPrefab;
-        [HideInInspector]
-        public AudioObject audioObject;
     }
 
 }

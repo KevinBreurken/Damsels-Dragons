@@ -35,9 +35,10 @@ namespace Base.Effect {
         /// Fades the fade layer to the given value.
         /// </summary>
         /// <param name="_endValue">The value it will fade to.</param>
-        public void Fade (float _endValue) {
+        public IEnumerator Fade (float _endValue) {
 
             canvasGroup.DOFade(_endValue, fadeSpeed).OnComplete(FadeCompleted);
+            yield return new WaitForSeconds(fadeSpeed);
 
         }
 
@@ -46,9 +47,10 @@ namespace Base.Effect {
         /// </summary>
         /// <param name="_endValue">The value it will fade to.</param>
         /// <param name="_speed">How fast the screen will fade.</param>
-        public void Fade (float _endValue, float _speed) {
-            Debug.Log(_endValue);
+        public IEnumerator Fade (float _endValue, float _speed) {
+
             canvasGroup.DOFade(_endValue, _speed).OnComplete(FadeCompleted);
+            yield return new WaitForSeconds(_speed);
 
         }
 
@@ -58,10 +60,11 @@ namespace Base.Effect {
         /// <param name="_endValue">The value it will fade to.</param>
         /// <param name="_speed">How fast the screen will fade.</param>
         /// <param name="_startValue">which value the canvasGroup starts in.</param>
-        public void Fade (float _endValue, float _speed, float _startValue) {
+        public IEnumerator Fade (float _endValue, float _speed, float _startValue) {
 
             canvasGroup.alpha = _startValue;
             canvasGroup.DOFade(_endValue, _speed).OnComplete(FadeCompleted);
+            yield return new WaitForSeconds(_speed);
 
         }
 
@@ -70,6 +73,19 @@ namespace Base.Effect {
             canvasGroup.DOKill();
 
         }
+
+        public void SetFadeLayerValue(float _value) {
+
+            canvasGroup.alpha = _value;
+
+        }
+
+        public float GetFadeLayerValue () {
+
+            return canvasGroup.alpha;
+
+        }
+
         /// <summary>
         /// Called when the fade tween is finished.
         /// </summary>

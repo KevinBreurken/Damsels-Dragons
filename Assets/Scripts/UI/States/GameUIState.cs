@@ -8,15 +8,11 @@ namespace Base.UI.State {
     /// </summary>
     public class GameUIState : BaseUIState {
 
-        // Use this for initialization
-        void Start () {
-
+        public override void Enter () {
+            base.Enter();
+            Game.GameStateSelector.Instance.SetState("InGameState");
         }
 
-        // Update is called once per frame
-        void Update () {
-
-        }
     }
 
 }

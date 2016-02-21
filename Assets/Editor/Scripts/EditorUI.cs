@@ -7,6 +7,7 @@ using Base.Audio;
 using Base.Management;
 using System.Collections.Generic;
 using DG.Tweening;
+using Base.UI;
 
 namespace Base.CustomEditors {
 
@@ -95,7 +96,7 @@ namespace Base.CustomEditors {
 
         }
 
-        public static Vector3 DrawVector2Field(Vector2 _vector2,string _text) {
+        public static Vector2 DrawVector2Field(Vector2 _vector2,string _text) {
 
             EditorGUILayout.BeginHorizontal();
 
@@ -106,7 +107,18 @@ namespace Base.CustomEditors {
             return _vector2;
         }
 
-		public static GameObject DrawGameObjectField(GameObject _object, string _text,bool _allowSceneObjects) {
+        public static Vector3 DrawVector3Field (Vector3 _vector3, string _text) {
+
+            EditorGUILayout.BeginHorizontal();
+
+            _vector3 = EditorGUILayout.Vector3Field(_text, _vector3);
+
+            EditorGUILayout.EndHorizontal();
+
+            return _vector3;
+        }
+
+        public static GameObject DrawGameObjectField(GameObject _object, string _text,bool _allowSceneObjects) {
 
             EditorGUILayout.BeginHorizontal();
 
@@ -135,7 +147,71 @@ namespace Base.CustomEditors {
 
 	}
 
-    public class UIFunctions {
+    public class DrawUI {
+
+        public static UIAnimationData DrawAnimationDataPanel (UIAnimationData _data, string _titleName) {
+
+            UIAnimationData data = _data;
+
+            EditorGUILayout.BeginVertical("Box");
+            Draw.TitleField(_titleName);
+
+            Draw.TitleField("Overall");
+            EditorGUILayout.BeginVertical("Box");
+            data.delay = Draw.FloatField(data.delay, "Start Delay");
+            EditorGUILayout.EndVertical();
+
+            data.usesSoundEffect = Draw.TitleWithToggle(data.usesSoundEffect, "Sound Effect");
+            if (data.usesSoundEffect) {
+                EditorGUILayout.BeginVertical("Box");
+                data.soundEffect.objectPrefab = Draw.DrawGameObjectField(data.soundEffect.objectPrefab, "Sound Effect Prefab", false);
+                data.soundEffectDelay = Draw.FloatField(data.soundEffectDelay, "Start Delay");
+                EditorGUILayout.EndVertical();
+            }
+
+            data.usesMoveAnimation = Draw.TitleWithToggle(data.usesMoveAnimation, "Movement");
+            if (data.usesMoveAnimation) {
+                EditorGUILayout.BeginVertical("Box");
+                data.useStartPosition = Draw.ToggleField(data.useStartPosition, "Use Start Position");
+                if(data.useStartPosition)
+                    data.startPosition = Draw.DrawVector2Field(data.startPosition, "Start Position");
+                data.endPosition = Draw.DrawVector2Field(data.endPosition, "End Position");
+                data.moveAnimationTime = Draw.FloatField(data.moveAnimationTime, "Time");
+                data.moveDelay = Draw.FloatField(data.moveDelay, "Start Delay");
+                data.moveEaseType = Draw.DrawEaseField(data.moveEaseType, "Easing Type");
+                EditorGUILayout.EndVertical();
+            }
+
+            data.usesFadeAnimation = Draw.TitleWithToggle(data.usesFadeAnimation, "Fade");
+            if (data.usesFadeAnimation) {
+                EditorGUILayout.BeginVertical("Box");
+                data.useStartFadeValue = Draw.ToggleField(data.useStartFadeValue, "Use Start Fade Value");
+                if (data.useStartFadeValue)
+                    data.startFadeValue = Draw.FloatField(data.startFadeValue, "Start Fade Value");
+                data.endFadeValue = Draw.FloatField(data.endFadeValue, "End Fade Value");
+                data.fadeAnimationTime = Draw.FloatField(data.fadeAnimationTime, "Time");
+                data.fadeDelay = Draw.FloatField(data.fadeDelay, "Start Delay");
+                data.fadeEaseType = Draw.DrawEaseField(data.moveEaseType, "Easing Type");
+                EditorGUILayout.EndVertical();
+            }
+
+            data.usesRotationAnimation = Draw.TitleWithToggle(data.usesRotationAnimation, "Rotation");
+            if (data.usesRotationAnimation) {
+                EditorGUILayout.BeginVertical("Box");
+                data.useStartRotation = Draw.ToggleField(data.useStartRotation, "Use Start Rotation");
+                if (data.useStartRotation)
+                    data.startRotation = Draw.DrawVector3Field(data.startRotation, "Start Rotation Value");
+                data.endRotation = Draw.DrawVector3Field(data.endRotation, "End Rotation Value");
+                data.rotationAnimationTime = Draw.FloatField(data.rotationAnimationTime, "Time");
+                data.rotationDelay = Draw.FloatField(data.rotationDelay, "Start Delay");
+                data.rotationEaseType = Draw.DrawEaseField(data.rotationEaseType, "Easing Type");
+                EditorGUILayout.EndVertical();
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            return data;
+        }
 
     }
 

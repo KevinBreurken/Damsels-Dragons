@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿///This is used purely for Doxygen
+
+/// <summary>
 /// Namespace for the project itself.
 /// </summary>
 namespace Base { }
@@ -29,8 +31,26 @@ namespace Base.UI.State { }
 namespace Base.Control { }
 
 /// <summary>
-/// Namespace for Control (Input) Method related classes.
+/// Namespace for Control (Input) Method related Classes.
 /// </summary>
 namespace Base.Control.Method { }
 
+/// <summary>
+/// Namespace for Effect related Classes.
+/// </summary>
+namespace Base.Effect { }
 
+/// <summary>
+/// Namespace for Game related Classes.
+/// </summary>
+namespace Base.Game { }
+
+/// <summary>
+/// Namespace for Game State related Classes.
+/// </summary>
+namespace Base.Game.State { }
+
+/// <summary>
+/// Namespace for Math related classes.
+/// </summary>
+namespace Math { }

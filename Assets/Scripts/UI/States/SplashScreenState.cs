@@ -55,9 +55,11 @@ namespace Base.UI.State {
 		public override void Enter () {
 
 			base.Enter ();
-            Effect.EffectManager.Instance.FadeEffect.Fade(0, fadeInTime);
-            Effect.EffectManager.Instance.FadeEffect.onFadeFinished += OnFadedIn;
 
+            Effect.EffectManager.Instance.FadeEffect.SetFadeLayerValue(1);
+            StartCoroutine(Effect.EffectManager.Instance.FadeEffect.Fade(0, fadeInTime));
+            Effect.EffectManager.Instance.FadeEffect.onFadeFinished += OnFadedIn;
+            
         }
 
         private void OnFadedIn () {
@@ -70,7 +72,7 @@ namespace Base.UI.State {
         IEnumerator WaitToFadeOut () {
 
             yield return new WaitForSeconds(timeTillFadeOutTime);
-            Effect.EffectManager.Instance.FadeEffect.Fade(1, fadeOutTime);
+            StartCoroutine(Effect.EffectManager.Instance.FadeEffect.Fade(1, fadeOutTime));
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished += OnFadedOut;
 
         }
@@ -101,7 +103,7 @@ namespace Base.UI.State {
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= OnFadedIn;
 
             Effect.EffectManager.Instance.FadeEffect.StopFade();
-            Effect.EffectManager.Instance.FadeEffect.Fade(1, 1.35f);
+            StartCoroutine(Effect.EffectManager.Instance.FadeEffect.Fade(1, 1.35f));
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished += OnFadedOut;
 
         }

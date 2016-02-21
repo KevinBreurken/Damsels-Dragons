@@ -45,10 +45,22 @@ namespace Base.UI {
         /// </summary>
         public BaseUIState startUIState;
 
-        public override void Awake () {
+        public void Start () {
 
-            base.Awake();
             StartCoroutine(SetState(startUIState));
+
+        }
+
+        /// <summary>
+        /// Called when a new state is entered.
+        /// </summary>
+        public override void OnStateEntered () {
+
+            if(Effect.EffectManager.Instance.FadeEffect.GetFadeLayerValue() == 1) {
+
+                StartCoroutine(Effect.EffectManager.Instance.FadeEffect.Fade(0));
+
+            }
 
         }
 

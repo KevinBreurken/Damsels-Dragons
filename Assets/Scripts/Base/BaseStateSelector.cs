@@ -43,7 +43,6 @@ namespace Base {
             //Get the next state.
             for (int i = 0; i < States.Count; i++) {
 
-                Debug.Log((States[i].listedObject.GetComponent<BaseState>().GetType().ToString()));
                 if (States[i].listedObject.GetComponent<BaseState>().GetType().ToString().Contains(_nextState)) {
 
                     foundState = States[i].listedObject.GetComponent<BaseState>();
@@ -59,10 +58,16 @@ namespace Base {
             }
 
             StartCoroutine(SetState(foundState));
-
+            
         }
 
         public IEnumerator SetState (BaseState _nextState) {
+
+            if(_nextState == currentState) {
+
+                Debug.Log("State " + _nextState.name + " is already open.");
+
+            }
 
             nextState = _nextState;
 
@@ -77,6 +82,10 @@ namespace Base {
             currentState = nextState;
             currentState.Enter();
             nextState = null;
+            OnStateEntered();
+        }
+
+        public virtual void OnStateEntered () {
 
         }
 

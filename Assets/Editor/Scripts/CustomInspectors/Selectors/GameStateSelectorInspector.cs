@@ -4,6 +4,7 @@ using System.Collections;
 using Base.Management;
 using Base.CustomEditors;
 using Base.Game;
+using Base.Game.State;
 
 namespace Base.CustomEditors.Inspectors {
 

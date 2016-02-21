@@ -2,6 +2,7 @@
 using System.Collections;
 using Base.Management;
 using System.Collections.Generic;
+using Base.Game.State;
 
 namespace Base.Game {
 
@@ -46,6 +47,8 @@ namespace Base.Game {
         public override void Awake () {
 
             base.Awake();
+
+            if(startGameState != null)
             StartCoroutine(SetState(startGameState));
 
         }

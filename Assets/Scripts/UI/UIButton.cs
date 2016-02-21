@@ -2,10 +2,19 @@
 using System.Collections;
 using UnityEngine.UI;
 using Base.Audio;
+using UnityEngine.EventSystems;
+
 namespace Base.UI {
 
     [RequireComponent(typeof(Button),typeof(Image))]
     public class UIButton : UIObject {
+
+        public delegate void ButtonEvent ();
+
+        /// <summary>
+        /// Called when the AudioObject is finished playing.
+        /// </summary>
+        public event ButtonEvent onClicked;
 
         [HideInInspector]
         public Button Button;
@@ -13,10 +22,16 @@ namespace Base.UI {
         //Sound
         public AudioObjectHolder clickSound;
 
-        void Awake () {
-           
+        public override void Awake () {
+            base.Awake();
             Button = GetComponent<Button>();
+            Button.onClick.AddListener(() => OnButtonClicked());
+        }
 
+        private void OnButtonClicked () {
+            if (onClicked != null) {
+                onClicked();
+            }
         }
 
         void Start () {
@@ -38,7 +53,7 @@ namespace Base.UI {
 
             if (Input.GetKeyDown(KeyCode.P)) {
 
-                Hide();
+                StartCoroutine(Hide());
 
             }
             #endif
