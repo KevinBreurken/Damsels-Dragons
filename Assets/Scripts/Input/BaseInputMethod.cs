@@ -12,9 +12,9 @@ namespace Base.Control.Method {
 
         public KeyCode primaryKey;
 
-        public virtual Vector2 GetMovementInput () {
+		public virtual float GetMovementInput () {
 
-            return new Vector2(0, 0);
+			return 0.0f;
 
         }
 

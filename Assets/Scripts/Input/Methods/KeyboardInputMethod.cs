@@ -9,7 +9,18 @@ namespace Base.Control.Method {
     /// </summary>
     public class KeyboardInputMethod : BaseInputMethod {
 
+		public override float GetMovementInput ()
+		{
+			float movementInput = 0;
+			if(Input.GetKey(KeyCode.A)){
+				movementInput -= 1;
+			}
+			if(Input.GetKey(KeyCode.D)){
+				movementInput += 1;
+			}
 
+			return movementInput;
+		}
     }
 
 }

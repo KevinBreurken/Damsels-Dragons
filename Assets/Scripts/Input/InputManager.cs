@@ -39,6 +39,10 @@ namespace Base.Control {
 
         }
 
+		public delegate void InputChangeEvent (BaseInputMethod _changedMethod);
+
+		public event InputChangeEvent onInputChanged;
+
         /// <summary>
         /// List of all possible input methods.
         /// </summary>
@@ -75,6 +79,12 @@ namespace Base.Control {
             }
 
         }
+
+		public BaseInputMethod GetCurrentInputMethod () {
+			
+			return currentlyUsedInputMethod;
+
+		}
 
 
     }
