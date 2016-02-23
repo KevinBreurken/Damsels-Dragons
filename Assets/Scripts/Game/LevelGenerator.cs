@@ -44,7 +44,7 @@ namespace Base.Game {
 
             if (Input.GetKeyDown(KeyCode.Space)) {
 
-                GenerateNewLevel();
+                //GenerateNewLevel();
 
             }
 

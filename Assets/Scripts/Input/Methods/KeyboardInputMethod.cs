@@ -21,6 +21,19 @@ namespace Base.Control.Method {
 
 			return movementInput;
 		}
+
+        public override void Update () {
+            base.Update();
+
+            //Catch the Jump input.
+            if (Input.GetKeyDown(KeyCode.Space)) {
+
+                FireJumpEvent();
+
+            }
+
+        }
+
     }
 
 }

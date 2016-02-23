@@ -8,13 +8,32 @@ namespace Base.Control.Method {
     /// </summary>
     public class BaseInputMethod : MonoBehaviour {
 
-        public bool usesMouse;
+        public delegate void InputEvent ();
 
-        public KeyCode primaryKey;
+        /// <summary>
+        /// Called when the AudioObject is finished playing.
+        /// </summary>
+        public event InputEvent onJumpPressed;
+
+        public bool usesMouse;
 
 		public virtual float GetMovementInput () {
 
 			return 0.0f;
+
+        }
+
+        public virtual void Update () {
+            
+        }
+
+        public void FireJumpEvent () {
+
+            if(onJumpPressed != null) {
+
+                onJumpPressed();
+
+            }
 
         }
 
