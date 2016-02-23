@@ -27,30 +27,42 @@ namespace Base.Game {
 		void FixedUpdate () {
 
            //Apply horizontal movement.
-           rigidBody.AddForce(((Vector2.right * inputMethod.GetMovementInput()) *movementSpeedFactor),ForceMode2D.Impulse);
+           //rigidBody.AddForce(((Vector2.right * inputMethod.GetMovementInput()) *movementSpeedFactor));
           
 
         }
 
         void Update () {
 
-            if (rigidBody.velocity.magnitude > maxSpeed) {
-                rigidBody.velocity = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
-            }
+            
+			Vector3 vel = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
+			rigidBody.velocity = new Vector2(vel.x + inputMethod.GetMovementInput(),rigidBody.velocity.y);
 
-            Debug.DrawRay(transform.position, -Vector2.up);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up,1, floorCollisionMask.value);
-            if (hit.collider != null) {
+			//Detect if character is grounded.
+			isGrounded = false;
+			for (int i = 0; i < 3; i++) {
+				
+				CastToGround(new Vector3(-0.4f + (0.4f * i),0,0));
 
-                isGrounded = true;
+			}
 
-            } else {
-
-                isGrounded = false;
-
-            }
+			//Add slowdown.
+			rigidBody.velocity = new Vector2(rigidBody.velocity.x * 0.9f,rigidBody.velocity.y);
 
         }
+
+		private void CastToGround (Vector3 _positionOffset) {
+
+
+			Debug.DrawRay(transform.position + _positionOffset, -Vector2.up);
+			RaycastHit2D hit = Physics2D.Raycast(transform.position + _positionOffset, -Vector2.up,1, floorCollisionMask.value);
+			if (hit.collider != null) {
+
+				isGrounded = true;
+
+			}
+
+		}
 
         public void SetAtStartPosition () {
 
