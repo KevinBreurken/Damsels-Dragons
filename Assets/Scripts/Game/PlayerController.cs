@@ -19,11 +19,16 @@ namespace Base.Game {
 		void Awake () {
 
             rigidBody = GetComponent<Rigidbody2D>();
-			InputManager.Instance.onInputChanged += OnInputMethodChanged;
-            OnInputMethodChanged(InputManager.Instance.GetCurrentInputMethod());
 
 		}
 
+        void Start () {
+
+            InputManager.Instance.onInputChanged += OnInputMethodChanged;
+            OnInputMethodChanged(InputManager.Instance.GetCurrentInputMethod());
+
+        }
+        
 		void FixedUpdate () {
 
            //Apply horizontal movement.

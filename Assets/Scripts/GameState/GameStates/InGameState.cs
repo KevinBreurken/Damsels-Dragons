@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Base.Effect;
 namespace Base.Game.State {
 
     public class InGameState : BaseGameState {
@@ -8,8 +8,11 @@ namespace Base.Game.State {
         private LevelGenerator levelGenerator;
 		public GameObject characterPrefab;
         public GameObject cameraPrefab;
+        public GameObject backgroundCameraPrefab;
+
 		private PlayerController characterController;
         private CameraController cameraController;
+        private BackgroundController backgroundController;
 
         void Awake () {
 
@@ -30,6 +33,14 @@ namespace Base.Game.State {
                 GameObject cameraInstantiatedObject = (GameObject)Instantiate(cameraPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                 cameraController = cameraInstantiatedObject.GetComponent<CameraController>();
                 cameraController.target = characterController.transform;
+
+            }
+
+            if (backgroundController == null) {
+
+                GameObject backgroundCameraInstantiatedObject = (GameObject)Instantiate(backgroundCameraPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+                backgroundController = backgroundCameraInstantiatedObject.GetComponent<BackgroundController>();
+                backgroundController.CameraController = cameraController;
 
             }
 
