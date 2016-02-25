@@ -15,6 +15,7 @@ namespace Base.Game {
         private Rigidbody2D rigidBody;
         private BaseInputMethod inputMethod;
         private bool isGrounded;
+		private CameraController playerCamera;
 
 		void Awake () {
 
@@ -86,6 +87,12 @@ namespace Base.Game {
 
         }
 
+		public void SetCameraReference(CameraController _camera) {
+
+			playerCamera = _camera;
+
+		}
+
 		/// <summary>
 		/// Called when the input method is changed.
 		/// </summary>
@@ -102,6 +109,28 @@ namespace Base.Game {
             inputMethod.onJumpPressed += OnJumpPressed;
 
             Debug.Log("[Input] Input method is changed to : " + _newMethod.GetType().ToString() + "On The Player Controller");
+
+		}
+
+		void OnTriggerEnter2D(Collider2D _col){
+			
+			if (_col.gameObject.layer ==  LayerMask.NameToLayer("Triggers")) {
+				
+				if (_col.tag == "EndLevelTrigger") {
+
+					EndLevelChunk endChunk = _col.transform.parent.GetComponent<EndLevelChunk>();
+
+					if (!endChunk.isFinished) {
+
+						playerCamera.followTarget = false;
+						playerCamera.FixateChunk(endChunk);
+						Debug.Log(endChunk);
+
+					}
+
+				}
+
+			}
 
 		}
 

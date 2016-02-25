@@ -11,7 +11,6 @@ namespace Base.Game {
         /// </summary>
         public Transform endPoint;
 
-
         private int chunkLenght;
 
         void Awake () {

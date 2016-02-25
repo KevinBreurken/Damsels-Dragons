@@ -50,8 +50,6 @@ namespace Base.Game {
 
                     cameraLookPoint.transform.position = new Vector3(target.transform.position.x, target.transform.position.y);
 
-                   
-
                 }
 
                 if (onCameraScrolled != null) {
@@ -78,6 +76,10 @@ namespace Base.Game {
             cameraLookPoint.transform.position = new Vector3(target.transform.position.x, target.transform.position.y);
 
         }
+
+		public void FixateChunk (ChunkData _chunk){
+
+		}
 
     }
 

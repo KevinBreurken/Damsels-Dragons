@@ -18,7 +18,7 @@ namespace Base.Game.State {
 
             levelGenerator = GetComponent<LevelGenerator>();
 
-            //Create Character
+            //Create character.
             if (characterController == null) {
 
                 GameObject characterInstantiatedObject = (GameObject)Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
@@ -27,22 +27,27 @@ namespace Base.Game.State {
                 characterController.SetAtStartPosition();
 
             }
-            //Create Camera
+            //Create camera.
             if (cameraController == null) {
 
                 GameObject cameraInstantiatedObject = (GameObject)Instantiate(cameraPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                 cameraController = cameraInstantiatedObject.GetComponent<CameraController>();
                 cameraController.target = characterController.transform;
+				cameraController.transform.parent = this.transform;
 
             }
 
+			//Create background.
             if (backgroundController == null) {
 
                 GameObject backgroundCameraInstantiatedObject = (GameObject)Instantiate(backgroundCameraPrefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                 backgroundController = backgroundCameraInstantiatedObject.GetComponent<BackgroundController>();
                 backgroundController.CameraController = cameraController;
+				backgroundController.transform.parent = this.transform;
 
             }
+
+			characterController.SetCameraReference(cameraController);
 
         }
 
