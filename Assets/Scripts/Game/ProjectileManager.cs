@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Base.Management;
+using System.Collections.Generic;
 
 namespace Base.Game {
 
     public class ProjectileManager : MonoBehaviour {
 
-        public GameObject projecilePrefab;
-        private ObjectPool objectPool;
-
+		public GameObject projecilePrefab;
+		private List<ProjectileMovement> spawnedTiles = new List<ProjectileMovement>();
         public float[] delayTimes;
 
+		private ObjectPool objectPool;
         private int amountToSpawn;
         private float delayTime;
-        // Use this for initialization
+		private float factorSpeed;
+
         void Awake () {
 
             GameObject objectPoolObject = new GameObject();
@@ -28,7 +30,7 @@ namespace Base.Game {
 
         public void StartSpawning () {
 
-            Debug.Log("Start Spawning Projectiles");
+			StartCoroutine(PreBakeProjectiles());
             StartSequence();
 
         }
@@ -37,13 +39,39 @@ namespace Base.Game {
 
             amountToSpawn = Random.Range(2, 4);
             delayTime = delayTimes[Random.Range(0, delayTimes.Length)];
+	
             StartCoroutine(SpawnLoop());
 
         }
 
+		IEnumerator PreBakeProjectiles () { 
+
+			factorSpeed = 4;
+			yield return new WaitForSeconds(6);
+			factorSpeed = 1;
+
+			for (int i = 0; i < spawnedTiles.Count; i++) {
+				
+				spawnedTiles[i].SpeedFactor = 1;
+
+			}
+
+			StopAllCoroutines();
+
+			if (amountToSpawn == 0) {
+
+				StartCoroutine(WaitForNextSequence());
+
+			} else {
+
+				StartCoroutine(SpawnLoop());
+
+			}
+
+		}
         IEnumerator SpawnLoop () {
 
-            yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(1.45f / factorSpeed);
             SpawnBall();
             amountToSpawn--;
 
@@ -61,23 +89,35 @@ namespace Base.Game {
 
         IEnumerator WaitForNextSequence () {
 
-            yield return new WaitForSeconds(delayTime);
+			yield return new WaitForSeconds(delayTime / factorSpeed);
             StartSequence();
 
         }
 
         public void StopSpawning () {
+			
             Debug.Log("Stop Spawning Projectiles");
+
         }
 
         public void SpawnBall () {
 
             GameObject newObject = objectPool.GetObjectFromPool();
             newObject.transform.position = transform.position;
-            newObject.GetComponent<ProjectileMovement>().StartMove();
+
+			ProjectileMovement projectile = newObject.GetComponent<ProjectileMovement>();
+			projectile.SpeedFactor = factorSpeed;
+			spawnedTiles.Add(projectile);
+			projectile.StartMove();
+			projectile.manager = this;
 
         }
 
+		public void RemoveFromList (ProjectileMovement _movement) {
+			
+			spawnedTiles.Remove(_movement);
+
+		}
     }
 
 }
