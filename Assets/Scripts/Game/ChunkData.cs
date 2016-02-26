@@ -13,7 +13,7 @@ namespace Base.Game {
 
         private int chunkLenght;
 
-        void Awake () {
+        public virtual void Awake () {
 
             SetChunkLength();
 
@@ -46,15 +46,23 @@ namespace Base.Game {
         /// <param name="_position">The position this chunk will be placed at.</param>
         public void SetChunkPosition (Vector3 _position) {
 
-            gameObject.SetActive(true);
             transform.position = _position;
+
+        }
+
+        /// <summary>
+        /// Enables this chunk.
+        /// </summary>
+        public virtual void EnableChunk () {
+
+            gameObject.SetActive(true);
 
         }
 
         /// <summary>
         /// Disables this chunk.
         /// </summary>
-        public void DisableChunk () {
+        public virtual void DisableChunk () {
 
             gameObject.SetActive(false);
 

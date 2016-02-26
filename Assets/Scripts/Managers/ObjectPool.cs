@@ -34,7 +34,7 @@ namespace Base.Management {
         /// <summary>
         /// If the pooled GameObjects are visible in the hierarchy.
         /// </summary>
-        private bool hidePooledObjectsInHierarchy = true;
+        public bool hidePooledObjectsInHierarchy = true;
 
         /// <summary>
         /// Initializes the Object pool.

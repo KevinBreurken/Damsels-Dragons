@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 namespace Base.Game {
 
@@ -29,11 +30,12 @@ namespace Base.Game {
 
             gameViewCamera = GetComponent<Camera>();
             cameraLookPoint = new GameObject();
+            cameraLookPoint.hideFlags = HideFlags.HideInHierarchy;
             verticalPostion = transform.position.y;
 
         }
 
-        // Update is called once per frame
+        // Movement is done in fixedUpdate to prevent stuttering.
         void FixedUpdate () {
 
             if (followTarget) {
@@ -79,7 +81,13 @@ namespace Base.Game {
 
 		public void FixateChunk (ChunkData _chunk){
 
-		}
+            Vector3 point = gameViewCamera.WorldToViewportPoint(_chunk.transform.position);
+            Vector3 delta = _chunk.transform.position - gameViewCamera.ViewportToWorldPoint(new Vector3(0.25f, 0.5f, point.z)); //(new Vector3(0.5, 0.5, point.z));
+            Vector3 destination = transform.position;
+
+            transform.DOMoveX(_chunk.transform.position.x + 11, 2);
+
+        }
 
     }
 

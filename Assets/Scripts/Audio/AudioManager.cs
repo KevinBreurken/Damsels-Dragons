@@ -67,8 +67,8 @@ namespace Base.Audio {
         }
 
         public AudioObject CreateAudioInstance(GameObject _object) {
+
             GameObject audioGameObject = Instantiate(_object);
-            Debug.Log(audioGameObject);
             audioGameObject.hideFlags = hideAudioInHierarchy ? HideFlags.HideInHierarchy : HideFlags.None;
             audioGameObject.name = "[AudioObject] " + _object.name;
             audioGameObject.transform.parent = this.transform;

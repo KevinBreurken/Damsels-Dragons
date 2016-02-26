@@ -72,6 +72,7 @@ namespace Base.Game {
         public void SetSpawnChunk () {
             //Place the spawn Chunk.
             spawnChunk.SetChunkPosition(new Vector3(-11f, 0, 0));
+            spawnChunk.EnableChunk();
             generatedLength = spawnChunk.GetChunkLength();
             lengthToGenerate = 60;
             GenerateLevel(spawnChunk);
@@ -104,6 +105,7 @@ namespace Base.Game {
             if(generatedLength >= lengthToGenerate) {
                 //Generating level is finished, place end chunk.
                 endChunk[lastEndPoint].SetChunkPosition(_previousChunk.endPoint.position);
+                endChunk[lastEndPoint].EnableChunk();
                 lastSpawnedChunk = endChunk[lastEndPoint];
                 lastEndPoint++;
 
@@ -119,6 +121,7 @@ namespace Base.Game {
                 availableChunks.Remove(randomChunk);
                 usedChunks.Add(randomChunk);
                 randomChunk.SetChunkPosition(_previousChunk.endPoint.position);
+                randomChunk.EnableChunk();
                 generatedLength += randomChunk.GetChunkLength();
                 lastSpawnedChunk = randomChunk;
                 GenerateLevel(randomChunk);
