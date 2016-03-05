@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Base.Management;
+using DG.Tweening;
 
 namespace Base.Audio {
 
@@ -128,6 +129,25 @@ namespace Base.Audio {
             source.pitch = _pitch;
 
             source.Play();
+
+        }
+
+        public void SetVolume(float _volume) {
+
+            source.volume = _volume;
+
+        }
+
+        public void FadeVolume(float _startVolume, float _endVolume,float _duration) {
+
+            source.volume = _startVolume;
+            source.DOFade(_endVolume, _duration);
+           
+        }
+
+        public AudioSource GetSource () {
+
+            return source;
 
         }
 

@@ -37,7 +37,7 @@ namespace Base.Effect {
         /// <param name="_endValue">The value it will fade to.</param>
         public IEnumerator Fade (float _endValue) {
 
-            canvasGroup.DOFade(_endValue, fadeSpeed).OnComplete(FadeCompleted);
+            canvasGroup.DOFade(_endValue, fadeSpeed).OnComplete(FadeCompleted).SetUpdate(true);
             yield return new WaitForSeconds(fadeSpeed);
 
         }
@@ -49,7 +49,7 @@ namespace Base.Effect {
         /// <param name="_speed">How fast the screen will fade.</param>
         public IEnumerator Fade (float _endValue, float _speed) {
 
-            canvasGroup.DOFade(_endValue, _speed).OnComplete(FadeCompleted);
+            canvasGroup.DOFade(_endValue, _speed).OnComplete(FadeCompleted).SetUpdate(true);
             yield return new WaitForSeconds(_speed);
 
         }
@@ -63,7 +63,7 @@ namespace Base.Effect {
         public IEnumerator Fade (float _endValue, float _speed, float _startValue) {
 
             canvasGroup.alpha = _startValue;
-            canvasGroup.DOFade(_endValue, _speed).OnComplete(FadeCompleted);
+            canvasGroup.DOFade(_endValue, _speed).OnComplete(FadeCompleted).SetUpdate(true);
             yield return new WaitForSeconds(_speed);
 
         }

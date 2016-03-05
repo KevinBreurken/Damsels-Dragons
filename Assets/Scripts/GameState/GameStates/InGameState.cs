@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Base.Effect;
+using Base.UI;
+using Base.Audio;
+
 namespace Base.Game.State {
 
     public class InGameState : BaseGameState {
@@ -27,6 +30,7 @@ namespace Base.Game.State {
                 characterController.SetAtStartPosition();
 
             }
+
             //Create camera.
             if (cameraController == null) {
 
@@ -48,6 +52,7 @@ namespace Base.Game.State {
             }
 
 			characterController.SetCameraReference(cameraController);
+            characterController.SetStateReference(this);
 
         }
 
@@ -61,6 +66,20 @@ namespace Base.Game.State {
             characterController.SetAtStartPosition();
             cameraController.SetAtStartPosition();
             cameraController.followTarget = true;
+
+        }
+
+        public override IEnumerator Exit () {
+
+            levelGenerator.Unload();
+
+            return base.Exit();
+
+        }
+
+        public void LeaveGame () {
+
+            UIStateSelector.Instance.SetState("MenuUIState");
 
         }
 

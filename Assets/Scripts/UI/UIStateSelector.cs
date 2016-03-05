@@ -55,8 +55,8 @@ namespace Base.UI {
         /// Called when a new state is entered.
         /// </summary>
         public override void OnStateEntered () {
-
-            if(Effect.EffectManager.Instance.FadeEffect.GetFadeLayerValue() == 1) {
+            Debug.Log(Effect.EffectManager.Instance.FadeEffect.GetFadeLayerValue());
+            if(Effect.EffectManager.Instance.FadeEffect.GetFadeLayerValue() >= 0.9f) {
 
                 StartCoroutine(Effect.EffectManager.Instance.FadeEffect.Fade(0));
 

@@ -20,6 +20,7 @@ namespace Base.Game {
         private Vector3 velocity = Vector3.zero;
         public float dampTime = 0.15f;
         public Vector3 offset;
+        private float jumpOffset;
         public float cameraFollowDistance;
         private GameObject cameraLookPoint;
 
@@ -44,9 +45,16 @@ namespace Base.Game {
                 Vector3 delta = cameraLookPoint.transform.position - gameViewCamera.ViewportToWorldPoint(new Vector3(0.25f, 0.5f, point.z)); //(new Vector3(0.5, 0.5, point.z));
                 Vector3 destination = transform.position + delta + offset;
 
-                transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-                transform.position = new Vector3(transform.position.x, offset.y, 0);
+                if(target.transform.position.y > 4) {
+                    if(jumpOffset < 2)
+                    jumpOffset += 0.1f;
+                } else {
+                    if(jumpOffset > 0)
+                    jumpOffset -= 0.1f;
+                }
 
+                transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
+                transform.position = new Vector3(transform.position.x, offset.y + jumpOffset, 0);
 
                 if (target.transform.position.x > cameraLookPoint.transform.position.x) {
 

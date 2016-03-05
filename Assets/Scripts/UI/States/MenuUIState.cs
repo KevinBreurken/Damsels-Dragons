@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Base.Game;
+using Base.Audio;
 
 namespace Base.UI.State {
 
@@ -20,12 +21,18 @@ namespace Base.UI.State {
         }
 
         private void StartButton_onClicked () {
+
             UIStateSelector.Instance.SetState("GameUIState");
+
         }
 
         public override void Enter () {
 
             base.Enter();
+
+            AudioObject song = MusicManager.Instance.GetSongByName("MainMenuMusic");
+            song.FadeVolume(0, 1, 5);
+            StartCoroutine(MusicManager.Instance.TryToPlaySong(song));
 
             startButton.Show();
             optionsButton.Show();
@@ -42,6 +49,10 @@ namespace Base.UI.State {
             StartCoroutine(creditsButton.Hide());
             StartCoroutine(quitButton.Hide());
 
+            AudioObject song = MusicManager.Instance.GetSongByName("MainMenuMusic");
+            song.FadeVolume(1, 0, 5);
+            StartCoroutine(MusicManager.Instance.StopSong(song));
+
             /*
             if we want the total time of the longest button animation
             float waitTime = Calculate.GetHighestFromList(new List<float>() {
@@ -54,6 +65,7 @@ namespace Base.UI.State {
 
             yield return StartCoroutine(Effect.EffectManager.Instance.FadeEffect.Fade(1));
             base.Exit();
+
         }
 
     }

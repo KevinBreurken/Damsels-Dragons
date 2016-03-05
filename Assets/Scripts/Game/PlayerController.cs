@@ -2,7 +2,9 @@
 using System.Collections;
 using Base.Control;
 using Base.Control.Method;
+using Base.Game.State;
 
+using DG.Tweening;
 namespace Base.Game {
 	
 	public class PlayerController : MonoBehaviour {
@@ -16,6 +18,8 @@ namespace Base.Game {
         private BaseInputMethod inputMethod;
         private bool isGrounded;
 		private CameraController playerCamera;
+        private InGameState gameState;
+        private bool canDoubleJump;
 
 		void Awake () {
 
@@ -29,18 +33,9 @@ namespace Base.Game {
             OnInputMethodChanged(InputManager.Instance.GetCurrentInputMethod());
 
         }
-        
-		void FixedUpdate () {
-
-           //Apply horizontal movement.
-           //rigidBody.AddForce(((Vector2.right * inputMethod.GetMovementInput()) *movementSpeedFactor));
-          
-
-        }
 
         void Update () {
 
-            
 			Vector3 vel = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
 			rigidBody.velocity = new Vector2(vel.x + inputMethod.GetMovementInput(),rigidBody.velocity.y);
 
@@ -59,12 +54,12 @@ namespace Base.Game {
 
 		private void CastToGround (Vector3 _positionOffset) {
 
-
 			Debug.DrawRay(transform.position + _positionOffset, -Vector2.up);
 			RaycastHit2D hit = Physics2D.Raycast(transform.position + _positionOffset, -Vector2.up,1, floorCollisionMask.value);
 			if (hit.collider != null) {
 
 				isGrounded = true;
+                canDoubleJump = true;
 
 			}
 
@@ -76,22 +71,17 @@ namespace Base.Game {
 
         }
 
-        public void OnJumpPressed () {
-
-            if (isGrounded) {
-
-                rigidBody.AddForce((Vector2.up * jumpStrength), ForceMode2D.Impulse);
-
-            }
-            Debug.Log("Jump Pressed");
-
-        }
-
 		public void SetCameraReference(CameraController _camera) {
 
 			playerCamera = _camera;
 
 		}
+
+        public void SetStateReference(InGameState _gameState) {
+
+            gameState = _gameState;
+
+        }
 
 		/// <summary>
 		/// Called when the input method is changed.
@@ -112,27 +102,102 @@ namespace Base.Game {
 
 		}
 
-		void OnTriggerEnter2D(Collider2D _col){
-			
-			if (_col.gameObject.layer ==  LayerMask.NameToLayer("Triggers")) {
-				
-				if (_col.tag == "EndLevelTrigger") {
+        public void Die () {
 
-					EndLevelChunk endChunk = _col.transform.parent.GetComponent<EndLevelChunk>();
+            Time.timeScale = 0;
+            transform.DOJump(transform.position + new Vector3(-1, -9, 0), 5, 1, 2).SetUpdate(true).OnComplete(gameState.LeaveGame);
 
-					if (!endChunk.isFinished) {
+        }
 
-						playerCamera.followTarget = false;
-						playerCamera.FixateChunk(endChunk);
-						Debug.Log(endChunk);
+        //--------------Jumping-------------------------------
 
-					}
+        public void OnJumpPressed () {
 
-				}
+            if (isGrounded) {
 
-			}
+                transform.DOMoveY(transform.position.y + 3, 0.25f).OnComplete(OnNormalJumpComplete);
 
-		}
+            } else {
+
+                if (canDoubleJump) {
+
+                    transform.DOMoveY(transform.position.y + 3, 0.25f).OnComplete(OnNormalJumpComplete);
+                    canDoubleJump = false;
+
+                }
+
+            }
+
+        }
+
+        private void OnNormalJumpComplete () {
+
+            rigidBody.AddForce(new Vector2(0, -100));
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
+
+        }
+
+        private void OnRockJumpComplete () {
+
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
+
+        }
+
+        //-------------end Jumping-----------------------------
+
+
+        void OnTriggerEnter2D (Collider2D _col) {
+
+            if (_col.gameObject.layer == LayerMask.NameToLayer("Triggers")) {
+
+                if (_col.tag == "EndLevelTrigger") {
+
+                    EndLevelChunk endChunk = _col.transform.parent.GetComponent<EndLevelChunk>();
+
+                    if (!endChunk.isFinished) {
+
+                        playerCamera.followTarget = false;
+                        playerCamera.FixateChunk(endChunk);
+
+                    }
+
+                }
+
+            }
+
+            if (_col.gameObject.layer == LayerMask.NameToLayer("Moving")) {
+
+                if(_col.gameObject.tag == "FireProjectile") {
+
+                    Die();
+
+                }
+
+                if (_col.gameObject.tag == "StoneProjectile") {
+
+                    //Compare height
+                    float playerheight = transform.position.y;
+                    float projectileheight = _col.transform.position.y;
+
+                    if(projectileheight <= playerheight) {
+
+                        Debug.Log("is higher");
+                        transform.DOMoveY(transform.position.y + 5, 0.35f).OnComplete(OnRockJumpComplete);
+                        _col.GetComponent<Collider2D>().enabled = false;
+                        canDoubleJump = true;
+
+                    } else {
+
+                        Debug.Log("is lower");
+                        Die();
+
+                    }
+
+                }
+
+            }
+
+        }
 
 	}
 

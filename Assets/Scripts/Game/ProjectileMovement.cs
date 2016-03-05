@@ -32,21 +32,40 @@ namespace Base.Game {
 
 		public ProjectileManager manager;
 		public Sequence tweener;
+        private bool isAtEnd;
+        private Collider2D projectileCollider;
+
+        void Awake () {
+
+            projectileCollider = GetComponent<Collider2D>();
+
+        }
+
         public void StartMove () {
 
+            isAtEnd = false;
             Vector2 moveToPosition = GetMoveToPosition();
-			transform.DOMoveX(moveToPosition.x,0.35f);
-			transform.DOMoveY(moveToPosition.y + 1.5f, 0.35f).OnComplete(Bounce);
+            projectileCollider.enabled = true;
+            Tweener tween = transform.DOMove(new Vector3(moveToPosition.x, moveToPosition.y + 1.5f, 0), 0.35f).OnComplete(Bounce).SetEase(Ease.Linear);
+            tween.timeScale = speedFactor;
 
         }
 
         public void Bounce () {
 
-            Vector2 moveToPosition = GetMoveToPosition();
-            moveToPosition.y += 1.5f;
+            if (isAtEnd) {
 
-			tweener = transform.DOJump(moveToPosition, 5, 1, 1).OnComplete(Bounce).SetEase(easeType);
-			tweener.timeScale = speedFactor;
+                ReturnToPool();
+
+            } else {
+
+                Vector2 moveToPosition = GetMoveToPosition();
+                moveToPosition.y += 1.5f;
+
+                tweener = transform.DOJump(moveToPosition, 5, 1, 1).OnComplete(Bounce).SetEase(easeType);
+                tweener.timeScale = speedFactor;
+
+            }
 
         }
 
@@ -55,17 +74,24 @@ namespace Base.Game {
             RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-3, 10), -Vector2.up, 20, hitMask.value);
             if (hit.collider != null) {
 
+                if(hit.collider.tag == "ProjectileEndTrigger") {
+
+                    isAtEnd = true;
+
+                }
+
                 return hit.transform.position;
 
             }
 
-			ReturnToPool();
             return new Vector2(0, 0);
 
         }
 
-		private void ReturnToPool () {
-			
+		public void ReturnToPool () {
+
+            this.DOKill();
+            gameObject.SetActive(false);
 			manager.RemoveFromList(this);
 			GetComponent<ObjectPoolReturnReference>().ReturnToPool();
 

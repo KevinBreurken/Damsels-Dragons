@@ -40,12 +40,26 @@ namespace Base.Game {
 
         }
 
-        void FixedUpdate () {
+        /// <summary>
+        /// Called when the Game State is left.
+        /// </summary>
+        public void Unload () {
 
-            if (Input.GetKeyDown(KeyCode.Space)) {
+            for (int i = 0; i < usedChunks.Count; i++) {
 
-                //GenerateNewLevel();
+                ChunkData chunk = usedChunks[i];
+                chunk.DisableChunk();
+                availableChunks.Add(chunk);
 
+            }
+
+            spawnChunk.DisableChunk();
+            usedChunks.Clear();
+
+            for (int i = 0; i < endChunk.Count; i++) {
+
+                endChunk[i].GetComponent<EndLevelChunk>().projectileManager.Unload();
+                endChunk[i].GetComponent<EndLevelChunk>().DisableChunk();
             }
 
         }

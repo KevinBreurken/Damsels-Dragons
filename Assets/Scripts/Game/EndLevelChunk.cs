@@ -17,8 +17,9 @@ namespace Base.Game {
 
         public override void DisableChunk () {
 
-            base.DisableChunk();
+            
             projectileManager.StopSpawning();
+            base.DisableChunk();
 
         }
 
