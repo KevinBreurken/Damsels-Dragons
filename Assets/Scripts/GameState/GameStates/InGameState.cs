@@ -77,6 +77,14 @@ namespace Base.Game.State {
 
         }
 
+        public void EndLevel () {
+
+            Debug.Log("Level is ended");
+            levelGenerator.GenerateNewLevel();
+            characterController.OnLevelComplete();
+
+        }
+
         public void LeaveGame () {
 
             UIStateSelector.Instance.SetState("MenuUIState");

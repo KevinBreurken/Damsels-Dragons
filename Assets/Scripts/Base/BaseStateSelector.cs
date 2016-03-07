@@ -36,6 +36,24 @@ namespace Base {
             }      
 
         }
+        
+        public BaseState GetState(string _stateName) {
+
+            BaseState foundState = null;
+            //Get the next state.
+            for (int i = 0; i < States.Count; i++) {
+
+                if (States[i].listedObject.GetComponent<BaseState>().GetType().ToString().Contains(_stateName)) {
+
+                    foundState = States[i].listedObject.GetComponent<BaseState>();
+
+                }
+
+            }
+
+            return foundState;
+
+        }
 
         public void SetState (string _nextState) {
 

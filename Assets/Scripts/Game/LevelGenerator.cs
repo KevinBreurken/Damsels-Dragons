@@ -60,6 +60,7 @@ namespace Base.Game {
 
                 endChunk[i].GetComponent<EndLevelChunk>().projectileManager.Unload();
                 endChunk[i].GetComponent<EndLevelChunk>().DisableChunk();
+
             }
 
         }
@@ -106,6 +107,9 @@ namespace Base.Game {
 
             }
 
+            //Stop spawning projectiles.
+            endChunk[lastEndPoint].GetComponent<EndLevelChunk>().projectileManager.StopSpawning();
+
             spawnChunk.DisableChunk();
             usedChunks.Clear();
             generatedLength = spawnChunk.GetChunkLength();
@@ -117,17 +121,20 @@ namespace Base.Game {
         private void GenerateLevel (ChunkData _previousChunk) {
 
             if(generatedLength >= lengthToGenerate) {
+
+                endChunk[lastEndPoint].GetComponent<EndLevelChunk>().projectileManager.StopSpawning();
                 //Generating level is finished, place end chunk.
-                endChunk[lastEndPoint].SetChunkPosition(_previousChunk.endPoint.position);
-                endChunk[lastEndPoint].EnableChunk();
-                lastSpawnedChunk = endChunk[lastEndPoint];
                 lastEndPoint++;
 
-                if(lastEndPoint == 2) {
+                if (lastEndPoint == 2) {
 
                     lastEndPoint = 0;
 
                 }
+                endChunk[lastEndPoint].SetChunkPosition(_previousChunk.endPoint.position);
+                endChunk[lastEndPoint].EnableChunk();
+                lastSpawnedChunk = endChunk[lastEndPoint];
+              
 
             } else {
 

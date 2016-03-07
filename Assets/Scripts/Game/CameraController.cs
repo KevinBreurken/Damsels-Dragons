@@ -36,6 +36,13 @@ namespace Base.Game {
 
         }
 
+        public void ResumeFollowingTarget () {
+
+            cameraLookPoint.transform.position = gameViewCamera.ViewportToWorldPoint(new Vector3(0.25f, 0.5f, 0));
+            followTarget = true;
+
+        }
+
         // Movement is done in fixedUpdate to prevent stuttering.
         void FixedUpdate () {
 
@@ -62,11 +69,11 @@ namespace Base.Game {
 
                 }
 
-                if (onCameraScrolled != null) {
+            }
 
-                    onCameraScrolled();
+            if (onCameraScrolled != null) {
 
-                }
+                onCameraScrolled();
 
             }
 
@@ -94,7 +101,7 @@ namespace Base.Game {
             Vector3 destination = transform.position;
 
             transform.DOMoveX(_chunk.transform.position.x + 11, 2);
-
+            transform.DOMoveY(0.75f, 2);
         }
 
     }

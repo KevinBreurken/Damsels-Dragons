@@ -17,6 +17,7 @@ namespace Base.Game {
 		private ObjectPool fireProjectilePool;
         private ObjectPool stoneProjectilePool;
 
+        private bool canSpawn;
         private int amountToSpawn;
         private int currentSpawnedProjectileIndex;
         private float delayTime;
@@ -59,6 +60,7 @@ namespace Base.Game {
 
         public void StartSpawning () {
 
+            canSpawn = true;
 			StartCoroutine(PreBakeProjectiles());
             StartSequence();
 
@@ -103,17 +105,21 @@ namespace Base.Game {
         IEnumerator SpawnLoop () {
 
 			yield return new WaitForSeconds(1.45f / factorSpeed);
-            SpawnBall(currentSequence.projectileSequence[currentSpawnedProjectileIndex]);
-            Debug.Log(currentSpawnedProjectileIndex);
-            currentSpawnedProjectileIndex++;
 
-            if (currentSpawnedProjectileIndex == amountToSpawn) {
+            if (canSpawn) {
 
-                StartCoroutine(WaitForNextSequence());
+                SpawnBall(currentSequence.projectileSequence[currentSpawnedProjectileIndex]);
+                currentSpawnedProjectileIndex++;
 
-            } else {
+                if (currentSpawnedProjectileIndex == amountToSpawn) {
 
-                StartCoroutine(SpawnLoop());
+                    StartCoroutine(WaitForNextSequence());
+
+                } else {
+
+                    StartCoroutine(SpawnLoop());
+
+                }
 
             }
 
@@ -128,6 +134,8 @@ namespace Base.Game {
 
         public void StopSpawning () {
 
+            Debug.Log("Spawner Stops with spawning projectiles.");
+            canSpawn = false;
             StopAllCoroutines();
 
         }
