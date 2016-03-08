@@ -22,10 +22,12 @@ namespace Base.Game {
         private InGameState gameState;
         private bool canDoubleJump;
         private bool isControlledByPlayer;
+        private Animator animator;
 
         void Awake () {
 
             rigidBody = GetComponent<Rigidbody2D>();
+            animator = GetComponentInChildren<Animator>();
 
         }
 
@@ -39,9 +41,21 @@ namespace Base.Game {
         void Update () {
 
             Vector3 vel = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
-            if (isControlledByPlayer)
-                rigidBody.velocity = new Vector2(vel.x + inputMethod.GetMovementInput(), rigidBody.velocity.y);
+            if (isControlledByPlayer) {
 
+                if(inputMethod.GetMovementInput() != 0) {
+
+                    rigidBody.velocity = new Vector2(vel.x + inputMethod.GetMovementInput(), rigidBody.velocity.y);
+                    animator.SetBool("IsMoving", true);
+
+                } else {
+
+                    animator.SetBool("IsMoving", false);
+
+                }
+               
+            }
+            
             //Detect if character is grounded.
             isGrounded = false;
             for (int i = 0; i < 3; i++) {
@@ -49,7 +63,7 @@ namespace Base.Game {
                 CastToGround(new Vector3(-0.4f + (0.4f * i), 0, 0));
 
             }
-
+            animator.SetBool("IsGrounded", isGrounded);
             //Add slowdown.
             rigidBody.velocity = new Vector2(rigidBody.velocity.x * 0.9f, rigidBody.velocity.y);
 
@@ -138,6 +152,7 @@ namespace Base.Game {
                 if (isGrounded) {
 
                     transform.DOMoveY(transform.position.y + 3, 0.25f).OnComplete(OnNormalJumpComplete);
+                    animator.SetTrigger("IsJumping");
 
                 } else {
 
@@ -145,6 +160,7 @@ namespace Base.Game {
 
                         transform.DOMoveY(transform.position.y + 3, 0.25f).OnComplete(OnNormalJumpComplete);
                         canDoubleJump = false;
+                        animator.SetTrigger("IsJumping");
 
                     }
 
