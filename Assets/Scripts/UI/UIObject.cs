@@ -56,20 +56,28 @@ namespace Base.UI {
         /// Called when the mouse pointer enters the UIObject.
         /// </summary>
         public void OnPointerEnter (PointerEventData eventData) {
+
             if (!isTweening) {
+
                 StopAllCoroutines();
                 StartCoroutine(PlayAnimation(enterAnimationData));
+
             }
+
         }
 
         /// <summary>
         /// Called when the mouse pointer exits the UIObject.
         /// </summary>
         public void OnPointerExit (PointerEventData eventData) {
+
             if (!isTweening) {
+
                 StopAllCoroutines();
                 StartCoroutine(PlayAnimation(exitAnimationData));
+
             }
+
         }
 
         /// <summary>

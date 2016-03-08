@@ -3,8 +3,9 @@ using System.Collections;
 using Base.Control;
 using Base.Control.Method;
 using Base.Game.State;
-
+using Base.Score;
 using DG.Tweening;
+
 namespace Base.Game {
 
     public class PlayerController : MonoBehaviour {
@@ -153,6 +154,14 @@ namespace Base.Game {
 
         }
 
+        private void OnJumpedOnRock () {
+
+            transform.DOMoveY(transform.position.y + 5, 0.35f).OnComplete(OnRockJumpComplete);
+            canDoubleJump = true;
+            ScoreManager.Instance.AddScore(100);
+
+        }
+
         private void OnNormalJumpComplete () {
 
             rigidBody.AddForce(new Vector2(0, -100));
@@ -209,18 +218,17 @@ namespace Base.Game {
 
                         //Compare height
                         float playerheight = transform.position.y;
-                        float projectileheight = _col.transform.position.y;
+                        float projectileheight = _col.gameObject.transform.position.y;
 
                         if (projectileheight <= playerheight) {
 
-                            Debug.Log("is higher");
-                            transform.DOMoveY(transform.position.y + 5, 0.35f).OnComplete(OnRockJumpComplete);
+                            //Jumped on rock.
                             _col.GetComponent<Collider2D>().enabled = false;
-                            canDoubleJump = true;
+                            OnJumpedOnRock();
 
                         } else {
 
-                            Debug.Log("is lower");
+                            //Hit by rock.
                             Die();
 
                         }
