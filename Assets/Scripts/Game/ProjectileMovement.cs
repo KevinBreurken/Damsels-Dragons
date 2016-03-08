@@ -10,6 +10,7 @@ namespace Base.Game {
 
         public LayerMask hitMask;
         public Ease easeType;
+
 		private float speedFactor;
 		public float SpeedFactor {
 
@@ -22,8 +23,11 @@ namespace Base.Game {
 			set {
 
 				speedFactor = value;
+
 				if(tweener != null) {
+
 					tweener.timeScale = speedFactor;
+
 				}
 
 			}
@@ -43,6 +47,7 @@ namespace Base.Game {
 
         public void StartMove () {
 
+            transform.DOKill();
             isAtEnd = false;
             Vector2 moveToPosition = GetMoveToPosition();
             projectileCollider.enabled = true;
@@ -83,6 +88,8 @@ namespace Base.Game {
                 return hit.transform.position;
 
             }
+
+            ReturnToPool();
 
             return new Vector2(0, 0);
 
