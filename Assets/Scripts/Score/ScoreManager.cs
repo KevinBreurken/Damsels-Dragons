@@ -36,6 +36,7 @@ namespace Base.Score {
 
         public int currentMatchScore;
         public Text scoreText;
+        public Camera gameCamera;
 
         void Update () {
 
@@ -48,6 +49,8 @@ namespace Base.Score {
             currentMatchScore += _value;
 
         }
+
+        
 
     }
 
