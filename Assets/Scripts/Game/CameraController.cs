@@ -81,7 +81,7 @@ namespace Base.Game {
 
         public void SetAtStartPosition () {
 
-            transform.position = new Vector2(0, 0.65f);
+            transform.position = new Vector2(-3.201591f, 0.65f);
 
             Vector3 point = gameViewCamera.WorldToViewportPoint(cameraLookPoint.transform.position);
             Vector3 delta = cameraLookPoint.transform.position - gameViewCamera.ViewportToWorldPoint(new Vector3(0.25f, 0.5f, point.z)); //(new Vector3(0.5, 0.5, point.z));

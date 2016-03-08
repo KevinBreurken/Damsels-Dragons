@@ -27,17 +27,18 @@ namespace Base.Game {
             chunkHolder.transform.parent = this.transform;
 
             //Create all chunks.
+            
             spawnChunk = CreateChunk(spawnChunkPrefab);
             endChunk.Add(CreateChunk(endChunkPrefab));
             endChunk.Add(CreateChunk(endChunkPrefab));
-
+           
             for (int i = 0; i < chunkPrefabs.Count; i++) {
 
                 ChunkData chunk = CreateChunk(chunkPrefabs[i]);
                 availableChunks.Add(chunk);
 
             }
-
+            
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace Base.Game {
         /// Generates a new level.
         /// </summary>
         public void GenerateNewLevel () {
-
+            
             for (int i = 0; i < usedChunks.Count; i++) {
 
                 ChunkData chunk = usedChunks[i];
@@ -115,7 +116,7 @@ namespace Base.Game {
             generatedLength = spawnChunk.GetChunkLength();
             lengthToGenerate = 60;
             GenerateLevel(lastSpawnedChunk);
-
+            
         }
 
         private void GenerateLevel (ChunkData _previousChunk) {

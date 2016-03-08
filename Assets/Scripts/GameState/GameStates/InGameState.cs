@@ -18,7 +18,7 @@ namespace Base.Game.State {
         private BackgroundController backgroundController;
 
         void Awake () {
-
+            
             levelGenerator = GetComponent<LevelGenerator>();
 
             //Create character.
@@ -30,7 +30,7 @@ namespace Base.Game.State {
                 characterController.SetAtStartPosition();
 
             }
-
+            
             //Create camera.
             if (cameraController == null) {
 
@@ -53,20 +53,20 @@ namespace Base.Game.State {
 
 			characterController.SetCameraReference(cameraController);
             characterController.SetStateReference(this);
-
+            
         }
 
         public override void Enter () {
 
             base.Enter();
-
+            
             Awake();
 
             levelGenerator.SetSpawnChunk();
             characterController.SetAtStartPosition();
             cameraController.SetAtStartPosition();
             cameraController.followTarget = true;
-
+            
         }
 
         public override IEnumerator Exit () {
