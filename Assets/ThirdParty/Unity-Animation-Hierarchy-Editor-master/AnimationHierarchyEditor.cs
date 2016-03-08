@@ -1,9 +1,13 @@
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-	
+
+#if UNITY_EDITOR
+
 public class AnimationHierarchyEditor : EditorWindow {
 	private static int columnWidth = 300;
 	
@@ -370,3 +374,5 @@ public class AnimationHierarchyEditor : EditorWindow {
 		}
 	}
 }
+
+#endif
