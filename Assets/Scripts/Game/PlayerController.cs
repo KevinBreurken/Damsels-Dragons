@@ -14,6 +14,7 @@ namespace Base.Game {
         public float jumpStrength;
         public LayerMask floorCollisionMask;
         public float maxSpeed;
+        public SpriteRenderer characterSprite;
 
         private Rigidbody2D rigidBody;
         private BaseInputMethod inputMethod;
@@ -43,10 +44,18 @@ namespace Base.Game {
             Vector3 vel = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
             if (isControlledByPlayer) {
 
-                if(inputMethod.GetMovementInput() != 0) {
+                float movementInput = inputMethod.GetMovementInput();
+                if (movementInput != 0) {
 
-                    rigidBody.velocity = new Vector2(vel.x + inputMethod.GetMovementInput(), rigidBody.velocity.y);
+                    rigidBody.velocity = new Vector2(vel.x + movementInput, rigidBody.velocity.y);
                     animator.SetBool("IsMoving", true);
+
+                    //Flip the sprite.
+                    if(movementInput < 0) {
+                        characterSprite.flipX = true;
+                    } else if (movementInput > 0) {
+                        characterSprite.flipX = false;
+                    }
 
                 } else {
 
@@ -174,7 +183,7 @@ namespace Base.Game {
 
             transform.DOMoveY(transform.position.y + 5, 0.35f).OnComplete(OnRockJumpComplete);
             canDoubleJump = true;
-            ScoreManager.Instance.AddScore(100);
+            ScoreManager.Instance.AddScore(15);
 
         }
 

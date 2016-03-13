@@ -12,12 +12,21 @@ namespace Base.UI.State {
     public class MenuUIState : BaseUIState {
 
         public UIButton startButton;
-        public UIButton optionsButton;
-        public UIButton creditsButton;
+        //public UIButton optionsButton;
+        //public UIButton creditsButton;
         public UIButton quitButton;
 
         void Awake () {
+
             startButton.onClicked += StartButton_onClicked;
+            quitButton.onClicked += QuitButton_onClicked;
+
+        }
+
+        private void QuitButton_onClicked () {
+
+            Application.Quit();
+
         }
 
         private void StartButton_onClicked () {
@@ -35,8 +44,8 @@ namespace Base.UI.State {
             StartCoroutine(MusicManager.Instance.TryToPlaySong(song));
 
             startButton.Show();
-            optionsButton.Show();
-            creditsButton.Show();
+            //optionsButton.Show();
+            //creditsButton.Show();
             quitButton.Show();
             GameStateSelector.Instance.SetState("OffGameState");
 
@@ -45,8 +54,8 @@ namespace Base.UI.State {
         public override IEnumerator Exit () {
 
             StartCoroutine(startButton.Hide());
-            StartCoroutine(optionsButton.Hide());
-            StartCoroutine(creditsButton.Hide());
+            //StartCoroutine(optionsButton.Hide());
+            //StartCoroutine(creditsButton.Hide());
             StartCoroutine(quitButton.Hide());
 
             AudioObject song = MusicManager.Instance.GetSongByName("MainMenuMusic");

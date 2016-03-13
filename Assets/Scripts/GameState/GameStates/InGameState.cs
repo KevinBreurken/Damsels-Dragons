@@ -38,6 +38,7 @@ namespace Base.Game.State {
                 cameraController = cameraInstantiatedObject.GetComponent<CameraController>();
                 cameraController.target = characterController.transform;
 				cameraController.transform.parent = this.transform;
+                Score.ScoreManager.Instance.gameCamera = cameraController.gameViewCamera;
 
             }
 
@@ -66,7 +67,8 @@ namespace Base.Game.State {
             characterController.SetAtStartPosition();
             cameraController.SetAtStartPosition();
             cameraController.followTarget = true;
-            
+            Score.ScoreManager.Instance.ResetScore();
+
         }
 
         public override IEnumerator Exit () {
