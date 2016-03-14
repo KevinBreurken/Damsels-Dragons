@@ -47,7 +47,7 @@ namespace Base.Game {
                 float movementInput = inputMethod.GetMovementInput();
                 if (movementInput != 0) {
 
-                    rigidBody.velocity = new Vector2(vel.x + movementInput, rigidBody.velocity.y);
+                    rigidBody.velocity = new Vector2(movementInput * 5, rigidBody.velocity.y);
                     animator.SetBool("IsMoving", true);
 
                     //Flip the sprite.
@@ -73,6 +73,7 @@ namespace Base.Game {
 
             }
             animator.SetBool("IsGrounded", isGrounded);
+
             //Add slowdown.
             rigidBody.velocity = new Vector2(rigidBody.velocity.x * 0.9f, rigidBody.velocity.y);
 
@@ -160,14 +161,16 @@ namespace Base.Game {
 
                 if (isGrounded) {
 
-                    transform.DOMoveY(transform.position.y + 3, 0.25f).OnComplete(OnNormalJumpComplete);
+					rigidBody.velocity = Vector2.zero;
+					rigidBody.AddForce(new Vector2(0, 400));
                     animator.SetTrigger("IsJumping");
 
                 } else {
 
                     if (canDoubleJump) {
 
-                        transform.DOMoveY(transform.position.y + 3, 0.25f).OnComplete(OnNormalJumpComplete);
+						rigidBody.velocity = Vector2.zero;
+						rigidBody.AddForce(new Vector2(0, 400));
                         canDoubleJump = false;
                         animator.SetTrigger("IsJumping");
 
@@ -189,8 +192,8 @@ namespace Base.Game {
 
         private void OnNormalJumpComplete () {
 
-            rigidBody.AddForce(new Vector2(0, -100));
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
+            //rigidBody.AddForce(new Vector2(0, -100));
+            //rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
 
         }
 
@@ -230,6 +233,17 @@ namespace Base.Game {
                     }
 
                 }
+
+				if (_col.gameObject.layer == LayerMask.NameToLayer("Pickup")) {
+
+					if (_col.gameObject.tag == "Coin") {
+
+						Die();
+
+					}
+
+				}
+
 
                 if (_col.gameObject.layer == LayerMask.NameToLayer("Moving")) {
 
