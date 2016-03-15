@@ -24,6 +24,7 @@ namespace Base.Game {
         private bool canDoubleJump;
         private bool isControlledByPlayer;
         private Animator animator;
+		private bool pushesDownward;
 
         void Awake () {
 
@@ -39,10 +40,22 @@ namespace Base.Game {
 
         }
 
+		void FixedUpdate () {
+			
+			if(pushesDownward){
+				
+				rigidBody.AddForce(new Vector2(0, -10));
+
+			}
+
+		}
+
         void Update () {
 
             Vector3 vel = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
             if (isControlledByPlayer) {
+
+				pushesDownward = inputMethod.GetDownInput();
 
                 float movementInput = inputMethod.GetMovementInput();
                 if (movementInput != 0) {
@@ -81,7 +94,6 @@ namespace Base.Game {
 
         private void CastToGround (Vector3 _positionOffset) {
 
-            Debug.DrawRay(transform.position + _positionOffset, -Vector2.up);
             RaycastHit2D hit = Physics2D.Raycast(transform.position + _positionOffset, -Vector2.up, 1, floorCollisionMask.value);
             if (hit.collider != null) {
 
@@ -91,6 +103,7 @@ namespace Base.Game {
             }
 
         }
+
 
         public void SetAtStartPosition () {
 

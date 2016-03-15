@@ -26,7 +26,7 @@ namespace Base.UI.State {
         public override IEnumerator Exit () {
 
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished += FadeEffect_onFadeFinished;
-
+			Score.ScoreManager.Instance.FinaliseScore();
             AudioObject song = MusicManager.Instance.GetSongByName("GameMusic");
             song.FadeVolume(1,0, 5);
             StartCoroutine(MusicManager.Instance.StopSong(song));
@@ -37,9 +37,12 @@ namespace Base.UI.State {
         }
 
         private void FadeEffect_onFadeFinished () {
+			
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished -= FadeEffect_onFadeFinished;
             Time.timeScale = 1;
+
         }
+
     }
 
 }

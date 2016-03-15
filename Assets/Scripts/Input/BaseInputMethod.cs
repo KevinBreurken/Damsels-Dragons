@@ -15,6 +15,7 @@ namespace Base.Control.Method {
         /// </summary>
         public event InputEvent onJumpPressed;
 
+		public KeyCode downInputKey;
         public bool usesMouse;
 
 		public virtual float GetMovementInput () {
@@ -22,6 +23,12 @@ namespace Base.Control.Method {
 			return 0.0f;
 
         }
+
+		public virtual bool GetDownInput () {
+
+			return Input.GetKey(downInputKey);
+
+		}
 
         public virtual void Update () {
             
