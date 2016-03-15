@@ -5,29 +5,31 @@ namespace Base.Game {
 	
 	public class CoinPickup : MonoBehaviour {
 
-		private SpriteRenderer spriteRenderer;
+		public GameObject coinRenderer;
 		private Collider2D collider;
+		public ParticleSystem system;
 
 		void Awake () {
 			
 			collider = GetComponent<Collider2D>();
-			spriteRenderer = GetComponent<SpriteRenderer>();
-
+		
 		}
 
 
 		public void Pickup () {
 			
 			collider.enabled = false;
-			spriteRenderer.enabled = false;
+			coinRenderer.SetActive(false);
             Score.ScoreManager.Instance.AddScore(100);
+			system.Stop();
+			system.Play();
 
 		}
 
 		public void Reset () {
 			
 			collider.enabled = true;
-			spriteRenderer.enabled = true;
+			coinRenderer.SetActive(true);
 
 		}
 

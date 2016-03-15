@@ -9,7 +9,7 @@ namespace Base.Effect {
         [System.Serializable]
         public class ScrollingBackgroundHolder {
 
-            public Material background;
+			public MeshRenderer renderer;
             public float scrollingSpeed;
 
         }
@@ -44,7 +44,9 @@ namespace Base.Effect {
         private void OnCameraScrolled () {
 
             for (int i = 0; i < backgrounds.Length; i++) {
-                backgrounds[i].background.SetTextureOffset("_MainTex", new Vector2((cameraController.transform.position.x / 100) * backgrounds[i].scrollingSpeed, 0));
+				
+				backgrounds[i].renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2((cameraController.transform.position.x / 100) * backgrounds[i].scrollingSpeed, 0));
+               
             }
             
 

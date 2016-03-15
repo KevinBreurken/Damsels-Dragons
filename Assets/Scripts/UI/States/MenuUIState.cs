@@ -12,8 +12,6 @@ namespace Base.UI.State {
     public class MenuUIState : BaseUIState {
 
         public UIButton startButton;
-        //public UIButton optionsButton;
-        //public UIButton creditsButton;
         public UIButton quitButton;
 
         void Awake () {

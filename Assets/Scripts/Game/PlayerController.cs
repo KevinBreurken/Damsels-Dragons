@@ -55,7 +55,7 @@ namespace Base.Game {
             Vector3 vel = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
             if (isControlledByPlayer) {
 
-				pushesDownward = inputMethod.GetDownInput();
+				pushesDownward = !inputMethod.GetDownInput();
 
                 float movementInput = inputMethod.GetMovementInput();
                 if (movementInput != 0) {
@@ -162,6 +162,7 @@ namespace Base.Game {
         public void Die () {
 
             Time.timeScale = 0;
+			isControlledByPlayer = false;
             transform.DOJump(transform.position + new Vector3(-1, -9, 0), 5, 1, 2).SetUpdate(true).OnComplete(gameState.LeaveGame);
 
         }
