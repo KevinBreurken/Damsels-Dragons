@@ -20,6 +20,7 @@ namespace Base.Game {
 			
 			collider.enabled = false;
 			spriteRenderer.enabled = false;
+            Score.ScoreManager.Instance.AddScore(100);
 
 		}
 

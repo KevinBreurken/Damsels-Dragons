@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Base.Game {
 
@@ -12,10 +13,19 @@ namespace Base.Game {
         public Transform endPoint;
 
         private int chunkLenght;
+        private CoinPickup[] coinpickups;
 
         public virtual void Awake () {
 
             SetChunkLength();
+
+            //Get all coins within the chunk.
+            Transform pickupHolder = transform.FindChild("Pickups");
+            if(pickupHolder != null) {
+
+                coinpickups = pickupHolder.GetComponentsInChildren<CoinPickup>();
+
+            }
 
         }
 
@@ -56,6 +66,16 @@ namespace Base.Game {
         public virtual void EnableChunk () {
 
             gameObject.SetActive(true);
+
+            if (coinpickups != null) {
+
+                for (int i = 0; i < coinpickups.Length; i++) {
+
+                    coinpickups[i].Reset();
+
+                }
+
+            }
 
         }
 

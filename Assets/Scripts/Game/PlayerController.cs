@@ -238,7 +238,7 @@ namespace Base.Game {
 
 					if (_col.gameObject.tag == "Coin") {
 
-						Die();
+                        _col.gameObject.GetComponent<CoinPickup>().Pickup();
 
 					}
 
