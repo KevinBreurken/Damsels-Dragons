@@ -35,6 +35,7 @@ namespace Base.Score {
         }
 
         public int currentMatchScore;
+		private int matchScore;
         public Text scoreText;
         public Camera gameCamera;
         private float startXPosition;
@@ -60,6 +61,18 @@ namespace Base.Score {
 
         }
         
+		public void FinaliseScore(){
+			
+			distanceScore = gameCamera.transform.position.x - startXPosition;
+			matchScore =  (currentMatchScore + (int)distanceScore);
+
+		}
+
+		public int GetScore () {
+			
+			return matchScore;
+
+		}
 
     }
 

@@ -100,8 +100,9 @@ namespace Base.Game {
             Vector3 delta = _chunk.transform.position - gameViewCamera.ViewportToWorldPoint(new Vector3(0.25f, 0.5f, point.z)); //(new Vector3(0.5, 0.5, point.z));
             Vector3 destination = transform.position;
 
-            transform.DOMoveX(_chunk.transform.position.x + 11, 2);
-            transform.DOMoveY(0.75f, 2);
+            transform.DOMoveX(_chunk.transform.position.x + 25, 2);
+            transform.DOMoveY(verticalPostion + offset.y, 2);
+
         }
 
     }

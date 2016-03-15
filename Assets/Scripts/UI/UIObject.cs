@@ -185,6 +185,25 @@ namespace Base.UI {
 
         }
 
+		// Used for debugging animations.
+		void Update () {
+
+			#if UNITY_EDITOR
+			if (Input.GetKeyDown(KeyCode.O)) {
+
+				Show();
+
+			}
+
+			if (Input.GetKeyDown(KeyCode.P)) {
+
+				StartCoroutine(Hide());
+
+			}
+			#endif
+
+		}
+
     }
 
 }
