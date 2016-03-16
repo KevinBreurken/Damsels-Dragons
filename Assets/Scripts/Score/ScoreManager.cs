@@ -44,7 +44,12 @@ namespace Base.Score {
         void Update () {
 
             distanceScore = gameCamera.transform.position.x - startXPosition;
-            scoreText.text = "" + (currentMatchScore + (int)distanceScore);
+
+            int displayScore = (currentMatchScore + (int)distanceScore);
+            if (displayScore < 0)
+                displayScore = 0;
+
+            scoreText.text = "" + displayScore;
 
         }
 
