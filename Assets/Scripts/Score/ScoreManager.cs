@@ -35,7 +35,7 @@ namespace Base.Score {
         }
 
         public int currentMatchScore;
-		private int matchScore;
+		private int matchScore = 0;
         public Text scoreText;
         public Camera gameCamera;
         private float startXPosition;

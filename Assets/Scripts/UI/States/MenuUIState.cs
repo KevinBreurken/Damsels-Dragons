@@ -7,29 +7,40 @@ using Base.Audio;
 namespace Base.UI.State {
 
     /// <summary>
-    /// Not yet finished. acts as dummy.
+    /// The menu state of the game.
     /// </summary>
     public class MenuUIState : BaseUIState {
 
         public UIButton startButton;
+        public UIButton highscoreButton;
         public UIButton quitButton;
 
         void Awake () {
 
             startButton.onClicked += StartButton_onClicked;
+            highscoreButton.onClicked += HighscoreButton_onClicked;
             quitButton.onClicked += QuitButton_onClicked;
 
         }
 
         private void QuitButton_onClicked () {
 
+            StartCoroutine(quitButton.Hide());
             Application.Quit();
 
         }
 
         private void StartButton_onClicked () {
 
+            StartCoroutine(startButton.Hide());
             UIStateSelector.Instance.SetState("GameUIState");
+
+        }
+
+        private void HighscoreButton_onClicked () {
+
+            StartCoroutine(highscoreButton.Hide());
+            UIStateSelector.Instance.SetState("HighscoreUIState");
 
         }
 
@@ -42,8 +53,7 @@ namespace Base.UI.State {
             StartCoroutine(MusicManager.Instance.TryToPlaySong(song));
 
             startButton.Show();
-            //optionsButton.Show();
-            //creditsButton.Show();
+            highscoreButton.Show();
             quitButton.Show();
             GameStateSelector.Instance.SetState("OffGameState");
 
@@ -51,15 +61,14 @@ namespace Base.UI.State {
 
         public override IEnumerator Exit () {
 
-            StartCoroutine(startButton.Hide());
-            //StartCoroutine(optionsButton.Hide());
-            //StartCoroutine(creditsButton.Hide());
-            StartCoroutine(quitButton.Hide());
+            if (UIStateSelector.Instance.nextState.name == "Game UI State") {
 
-            AudioObject song = MusicManager.Instance.GetSongByName("MainMenuMusic");
-            song.FadeVolume(1, 0, 5);
-            StartCoroutine(MusicManager.Instance.StopSong(song));
+                AudioObject song = MusicManager.Instance.GetSongByName("MainMenuMusic");
+                song.FadeVolume(1, 0, 5);
+                StartCoroutine(MusicManager.Instance.StopSong(song));
 
+            }
+            
             /*
             if we want the total time of the longest button animation
             float waitTime = Calculate.GetHighestFromList(new List<float>() {

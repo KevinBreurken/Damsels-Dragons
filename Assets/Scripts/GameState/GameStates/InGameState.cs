@@ -89,7 +89,7 @@ namespace Base.Game.State {
 
         public void LeaveGame () {
 
-            UIStateSelector.Instance.SetState("ResultUIState");
+            UIStateSelector.Instance.SetState("HighscoreUIState");
 
         }
 
