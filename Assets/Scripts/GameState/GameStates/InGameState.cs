@@ -12,6 +12,7 @@ namespace Base.Game.State {
 		public GameObject characterPrefab;
         public GameObject cameraPrefab;
         public GameObject backgroundCameraPrefab;
+        public ProgressBar progressBar;
 
 		private PlayerController characterController;
         private CameraController cameraController;
@@ -54,7 +55,8 @@ namespace Base.Game.State {
 
 			characterController.SetCameraReference(cameraController);
             characterController.SetStateReference(this);
-            
+            progressBar.target = characterController.gameObject;
+
         }
 
         public override void Enter () {
@@ -68,6 +70,7 @@ namespace Base.Game.State {
             cameraController.SetAtStartPosition();
             cameraController.followTarget = true;
             Score.ScoreManager.Instance.ResetScore();
+            progressBar.SetValues(characterController.transform.position.x, levelGenerator.GetLastChunk().transform.position.x);
 
         }
 
@@ -84,6 +87,7 @@ namespace Base.Game.State {
             Debug.Log("Level is ended");
             levelGenerator.GenerateNewLevel();
             characterController.OnLevelComplete();
+            progressBar.SetValues(characterController.transform.position.x, levelGenerator.GetLastChunk().transform.position.x);
 
         }
 

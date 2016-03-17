@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Base.Game;
 using Base.Audio;
 using DG.Tweening;
+using UnityEngine.UI;
 
 namespace Base.UI.State {
 
@@ -11,6 +12,17 @@ namespace Base.UI.State {
     /// The menu state of the game.
     /// </summary>
     public class MenuUIState : BaseUIState {
+
+        [System.Serializable]
+        public struct ButtonImage {
+
+            public Sprite normalButtonSprite;
+            public Sprite pressedButtonSprite;
+
+        }
+
+        public ButtonImage leftButtonImage;
+        public ButtonImage rightButtonImage;
 
         public UIButton startButton;
         public UIButton highscoreButton;
@@ -23,6 +35,10 @@ namespace Base.UI.State {
 		public CanvasGroup creditsLayer;
 		public HighscoreLayer highscoreLayerComponent;
 
+        private CanvasGroup previousOpenedLayer;
+        private UIButton previousButton;
+        private Sprite previousButtonSprite;
+
         void Awake () {
 
             startButton.onClicked += StartButton_onClicked;
@@ -30,19 +46,19 @@ namespace Base.UI.State {
             quitButton.onClicked += QuitButton_onClicked;
 			creditsButton.onClicked += CreditsButton_onClicked;
 			optionsButton.onClicked += OptionsButton_onClicked;
-			OpenLayer(highscoreLayer);
+			OpenLayer(highscoreLayer,highscoreButton, leftButtonImage);
 
         }
 
         void OptionsButton_onClicked () {
 
-			OpenLayer(optionsLayer);
+			OpenLayer(optionsLayer,optionsButton, leftButtonImage);
 
         }
 
         void CreditsButton_onClicked () {
 			
-			OpenLayer(creditsLayer);
+			OpenLayer(creditsLayer,creditsButton, rightButtonImage);
 
         }
 
@@ -62,16 +78,34 @@ namespace Base.UI.State {
 
         private void HighscoreButton_onClicked () {
 
-			OpenLayer(highscoreLayer);
+			OpenLayer(highscoreLayer,highscoreButton, leftButtonImage);
 			highscoreLayer.GetComponent<HighscoreLayer>().Enter();
 
         }
 
-		private void OpenLayer (CanvasGroup _layerToOpen) {
-			
+		private void OpenLayer (CanvasGroup _layerToOpen,UIButton _button, ButtonImage _buttonImage) {
+
+            if (previousOpenedLayer == _layerToOpen)
+                return;
+
+            if(previousOpenedLayer == highscoreLayer) {
+
+                highscoreLayerComponent.Exit();
+
+            }
+
 			DisableLayers();
 			_layerToOpen.interactable = true;
 			_layerToOpen.DOFade(1,0.5f);
+
+            if (previousButton != null)
+                previousButton.GetComponent<Image>().sprite = previousButtonSprite;
+
+            _button.GetComponent<Image>().sprite = _buttonImage.pressedButtonSprite;
+            previousOpenedLayer = _layerToOpen;
+
+            previousButton = _button;
+            previousButtonSprite = _buttonImage.normalButtonSprite;
 
 		}
 
@@ -103,7 +137,7 @@ namespace Base.UI.State {
 			optionsButton.Show();
 			creditsButton.Show();
 
-			OpenLayer(highscoreLayer);
+			OpenLayer(highscoreLayer,highscoreButton, leftButtonImage);
 
 			highscoreLayerComponent.Enter();
 

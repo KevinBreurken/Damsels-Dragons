@@ -29,12 +29,13 @@ namespace Base.UI.State {
         }
 
         void SubmitButton_onClicked () {
-			
+
 			if(inputField.text.Length != 0){
 				
 				scoreList[indexOfNewHighscore].transform.FindChild("Name").GetComponent<Text>().text = inputField.text;
 				scoreList[indexOfNewHighscore].transform.FindChild("Score").GetComponent<Text>().text = "" + newHighScore;
 				newHighScore = 0;
+                ScoreManager.Instance.ResetScore();
 				inputField.text = "";
 
 			}
@@ -62,6 +63,14 @@ namespace Base.UI.State {
 				HideInputPanel();
 
             }
+
+        }
+
+        public void Exit () {
+
+            newHighScore = 0;
+            ScoreManager.Instance.ResetScore();
+            inputField.text = "";
 
         }
 

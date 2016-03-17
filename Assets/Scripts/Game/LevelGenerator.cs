@@ -41,6 +41,12 @@ namespace Base.Game {
             
         }
 
+        public GameObject GetLastChunk () {
+
+            return endChunk[lastEndPoint].gameObject;
+
+        }
+
         /// <summary>
         /// Called when the Game State is left.
         /// </summary>

@@ -62,6 +62,7 @@ namespace Base.Score {
         public void ResetScore () {
 
             currentMatchScore = 0;
+            matchScore = 0;
             startXPosition = gameCamera.transform.position.x;
 
         }

@@ -113,9 +113,9 @@ namespace Base.Score {
 
             for (int i = 0; i < highscores.Count; i++) {
 
-                if (highscores[i].score > _value) {
-
-                    currentIndex = i;
+                if (highscores[i].score < _value) {
+                   
+                    return i;
 
                 }
 
