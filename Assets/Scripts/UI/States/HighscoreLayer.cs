@@ -13,73 +13,88 @@ namespace Base.UI.State {
     /// <summary>
     /// The menu state of the game.
     /// </summary>
-    public class HighscoreUIState : BaseUIState {
+	public class HighscoreLayer : MonoBehaviour {
 
-        public UIButton retryButton;
-        public UIButton menuButton;
         public CanvasGroup inputGroup;
         public List<GameObject> scoreList;
+		public UIButton submitButton;
+		public InputField inputField;
+		private int indexOfNewHighscore;
+		private int newHighScore;
+
         void Awake () {
-
-            retryButton.onClicked += RetryButton_onClicked;
-            menuButton.onClicked += MenuButton_onClicked;
-
-        }
-
-        private void RetryButton_onClicked () {
-
-            StartCoroutine(retryButton.Hide());
-            UIStateSelector.Instance.SetState("GameUIState");
+			
+			submitButton.onClicked += SubmitButton_onClicked;
 
         }
 
-        private void MenuButton_onClicked () {
+        void SubmitButton_onClicked () {
+			
+			if(inputField.text.Length != 0){
+				
+				scoreList[indexOfNewHighscore].transform.FindChild("Name").GetComponent<Text>().text = inputField.text;
+				scoreList[indexOfNewHighscore].transform.FindChild("Score").GetComponent<Text>().text = "" + newHighScore;
+				newHighScore = 0;
+				inputField.text = "";
 
-            StartCoroutine(menuButton.Hide());
-            UIStateSelector.Instance.SetState("MenuUIState");
+			}
+
+			SubmitNewHighscore();
+			HideInputPanel();
 
         }
-
-        public override void Enter () {
-
-            base.Enter();
-
-            Text retryText = retryButton.GetComponentInChildren<Text>();
-            switch (UIStateSelector.Instance.previousState.name) {
-                case "Menu UI State":
-                retryText.text = "Play";
-                break;
-                case "Game UI State":
-                retryText.text = "Retry";
-                break;
-            }
-
-            retryButton.Show();
-            menuButton.Show();
+			
+		public void Enter () {
          
             //Check if theres a highscore.
+			indexOfNewHighscore = -1;
             int score = ScoreManager.Instance.GetScore();
-            Debug.Log(score);
             if (HighScoreManager.Instance.IsEligibleForHighscore(score)) {
+
+				newHighScore = score;
                 inputGroup.DOFade(1, 0.5f);
                 inputGroup.interactable = true;
+				inputGroup.blocksRaycasts = true;
                 ShowScoreWithNewScoreEmpty(score);
+
             } else {
-                inputGroup.alpha = 0;
-                inputGroup.interactable = false;
-                UpdateScoreList();
+				
+				HideInputPanel();
+
             }
 
-            GameStateSelector.Instance.SetState("OffGameState");
-
         }
+
+		private void HideInputPanel () {
+
+			inputGroup.alpha = 0;
+			inputGroup.interactable = false;
+			inputGroup.blocksRaycasts = false;
+			UpdateScoreList();
+
+		}
+
+		private void SubmitNewHighscore () {
+			List<HighScore> highscore = new List<HighScore>();
+
+			for (int i = 0; i < scoreList.Count; i++) {
+				
+				HighScore newScore = new HighScore();
+				newScore.name = scoreList[i].transform.FindChild("Name").GetComponent<Text>().text;
+				newScore.score = int.Parse(scoreList[i].transform.FindChild("Score").GetComponent<Text>().text);
+				highscore.Add(newScore);
+
+			}
+
+			HighScoreManager.Instance.SaveScoreList(highscore);
+
+		}
 
         private void ShowScoreWithNewScoreEmpty (int _score) {
 
             int index = HighScoreManager.Instance.FindPositionInHighscore(_score);
             if(index == 99)
             index = 0;
-            Debug.Log(index);
             List<HighScore> highscore = HighScoreManager.Instance.LoadScoreList();
             for (int i = 0; i < scoreList.Count; i++) {
                 if(i < index) {
@@ -92,9 +107,10 @@ namespace Base.UI.State {
                     scoreList[i].transform.FindChild("Score").GetComponent<Text>().text = "" + highscore[i - 1].score;
                     scoreList[i].transform.FindChild("Name").GetComponent<Text>().text = "" + highscore[i - 1].name;
                 }
-               
-
             }
+
+			indexOfNewHighscore = index;
+
         }
 
         private void UpdateScoreList () {
@@ -106,13 +122,6 @@ namespace Base.UI.State {
                 scoreList[i].transform.FindChild("Name").GetComponent<Text>().text = "" + highscore[i].name;
 
             }
-
-        }
-
-        public override IEnumerator Exit () {
-
-            yield return StartCoroutine(Effect.EffectManager.Instance.FadeEffect.Fade(1));
-            base.Exit();
 
         }
 

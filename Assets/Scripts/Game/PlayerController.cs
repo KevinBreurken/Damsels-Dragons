@@ -60,7 +60,7 @@ namespace Base.Game {
                 float movementInput = inputMethod.GetMovementInput();
                 if (movementInput != 0) {
 
-                    rigidBody.velocity = new Vector2(movementInput * 5, rigidBody.velocity.y);
+					rigidBody.velocity = new Vector2(movementInput * movementSpeedFactor, rigidBody.velocity.y);
                     animator.SetBool("IsMoving", true);
 
                     //Flip the sprite.

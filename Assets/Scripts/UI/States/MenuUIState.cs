@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Base.Game;
 using Base.Audio;
+using DG.Tweening;
 
 namespace Base.UI.State {
 
@@ -13,13 +14,35 @@ namespace Base.UI.State {
 
         public UIButton startButton;
         public UIButton highscoreButton;
+		public UIButton optionsButton;
+		public UIButton creditsButton;
         public UIButton quitButton;
+
+		public CanvasGroup highscoreLayer;
+		public CanvasGroup optionsLayer;
+		public CanvasGroup creditsLayer;
+		public HighscoreLayer highscoreLayerComponent;
 
         void Awake () {
 
             startButton.onClicked += StartButton_onClicked;
             highscoreButton.onClicked += HighscoreButton_onClicked;
             quitButton.onClicked += QuitButton_onClicked;
+			creditsButton.onClicked += CreditsButton_onClicked;
+			optionsButton.onClicked += OptionsButton_onClicked;
+			OpenLayer(highscoreLayer);
+
+        }
+
+        void OptionsButton_onClicked () {
+
+			OpenLayer(optionsLayer);
+
+        }
+
+        void CreditsButton_onClicked () {
+			
+			OpenLayer(creditsLayer);
 
         }
 
@@ -39,10 +62,32 @@ namespace Base.UI.State {
 
         private void HighscoreButton_onClicked () {
 
-            StartCoroutine(highscoreButton.Hide());
-            UIStateSelector.Instance.SetState("HighscoreUIState");
+			OpenLayer(highscoreLayer);
+			highscoreLayer.GetComponent<HighscoreLayer>().Enter();
 
         }
+
+		private void OpenLayer (CanvasGroup _layerToOpen) {
+			
+			DisableLayers();
+			_layerToOpen.interactable = true;
+			_layerToOpen.DOFade(1,0.5f);
+
+		}
+
+		/// <summary>
+		/// This function disable all menu layers.
+		/// </summary>
+		private void DisableLayers(){
+
+			highscoreLayer.interactable = false;
+			highscoreLayer.alpha = 0;
+			optionsLayer.interactable = false;
+			optionsLayer.alpha = 0;
+			creditsLayer.interactable = false;
+			creditsLayer.alpha = 0;
+
+		}
 
         public override void Enter () {
 
@@ -55,6 +100,13 @@ namespace Base.UI.State {
             startButton.Show();
             highscoreButton.Show();
             quitButton.Show();
+			optionsButton.Show();
+			creditsButton.Show();
+
+			OpenLayer(highscoreLayer);
+
+			highscoreLayerComponent.Enter();
+
             GameStateSelector.Instance.SetState("OffGameState");
 
         }

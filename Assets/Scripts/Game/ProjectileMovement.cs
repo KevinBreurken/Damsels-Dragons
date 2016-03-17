@@ -47,6 +47,7 @@ namespace Base.Game {
 
         public void StartMove () {
 
+			StopAllCoroutines();
             transform.DOKill();
             isAtEnd = false;
             Vector2 moveToPosition = GetMoveToPosition();
@@ -88,7 +89,7 @@ namespace Base.Game {
                 return hit.transform.position;
 
             }
-
+				
             ReturnToPool();
 
             return new Vector2(0, 0);

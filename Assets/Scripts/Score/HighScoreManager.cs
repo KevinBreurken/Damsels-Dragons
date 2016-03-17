@@ -61,6 +61,8 @@ namespace Base.Score {
 
             }
 
+			PlayerPrefs.Save();
+
         }
 
         public List<HighScore> LoadScoreList () {
