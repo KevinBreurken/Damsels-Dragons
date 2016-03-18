@@ -96,6 +96,7 @@ namespace Base.UI.State {
 
 			DisableLayers();
 			_layerToOpen.interactable = true;
+            _layerToOpen.blocksRaycasts = true;
 			_layerToOpen.DOFade(1,0.5f);
 
             if (previousButton != null)
@@ -115,11 +116,14 @@ namespace Base.UI.State {
 		private void DisableLayers(){
 
 			highscoreLayer.interactable = false;
+            highscoreLayer.blocksRaycasts = false;
 			highscoreLayer.alpha = 0;
 			optionsLayer.interactable = false;
-			optionsLayer.alpha = 0;
+            optionsLayer.blocksRaycasts = false;
+            optionsLayer.alpha = 0;
 			creditsLayer.interactable = false;
-			creditsLayer.alpha = 0;
+            creditsLayer.blocksRaycasts = false;
+            creditsLayer.alpha = 0;
 
 		}
 
