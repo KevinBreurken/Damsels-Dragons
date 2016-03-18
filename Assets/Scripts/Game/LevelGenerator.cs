@@ -6,6 +6,8 @@ namespace Base.Game {
 
     public class LevelGenerator : MonoBehaviour {
 
+        public int currentLevel;
+
         public GameObject spawnChunkPrefab;
         public GameObject endChunkPrefab;
         public List<GameObject> chunkPrefabs;
@@ -93,19 +95,20 @@ namespace Base.Game {
         /// </summary>
         public void SetSpawnChunk () {
             //Place the spawn Chunk.
+            currentLevel = 1;
             spawnChunk.SetChunkPosition(new Vector3(-11f, 0, 0));
             spawnChunk.EnableChunk();
             generatedLength = spawnChunk.GetChunkLength();
             lengthToGenerate = 60;
             GenerateLevel(spawnChunk);
-
+            
         }
 
         /// <summary>
         /// Generates a new level.
         /// </summary>
         public void GenerateNewLevel () {
-            
+
             for (int i = 0; i < usedChunks.Count; i++) {
 
                 ChunkData chunk = usedChunks[i];
@@ -117,6 +120,8 @@ namespace Base.Game {
             //Stop spawning projectiles.
             endChunk[lastEndPoint].GetComponent<EndLevelChunk>().projectileManager.StopSpawning();
 
+            currentLevel++;
+
             spawnChunk.DisableChunk();
             usedChunks.Clear();
             generatedLength = spawnChunk.GetChunkLength();
@@ -127,7 +132,7 @@ namespace Base.Game {
 
         private void GenerateLevel (ChunkData _previousChunk) {
 
-            if(generatedLength >= lengthToGenerate) {
+            if (generatedLength >= lengthToGenerate) {
 
                 endChunk[lastEndPoint].GetComponent<EndLevelChunk>().projectileManager.StopSpawning();
                 //Generating level is finished, place end chunk.

@@ -39,6 +39,11 @@ namespace Base.UI {
 
         private bool isTweening;
 
+        public CanvasGroup GetCanvasGroup () {
+
+            return canvasGroup;
+
+        }
         public virtual void Awake () {
             //Initialize the animation data.
             showAnimationData.Initialize(transform);
@@ -89,6 +94,7 @@ namespace Base.UI {
 
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
+
 
             yield return StartCoroutine(PlayAnimation(hideAnimationData));
 

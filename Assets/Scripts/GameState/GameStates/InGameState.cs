@@ -3,11 +3,13 @@ using System.Collections;
 using Base.Effect;
 using Base.UI;
 using Base.Audio;
+using Base.UI.State;
 
 namespace Base.Game.State {
 
     public class InGameState : BaseGameState {
 
+        public GameUIState uiState;
         private LevelGenerator levelGenerator;
 		public GameObject characterPrefab;
         public GameObject cameraPrefab;
@@ -71,6 +73,7 @@ namespace Base.Game.State {
             cameraController.followTarget = true;
             Score.ScoreManager.Instance.ResetScore();
             progressBar.SetValues(characterController.transform.position.x, levelGenerator.GetLastChunk().transform.position.x);
+            StartCoroutine(WaitForCharacterControl());
 
         }
 
@@ -88,9 +91,27 @@ namespace Base.Game.State {
             levelGenerator.GenerateNewLevel();
             characterController.OnLevelComplete();
             progressBar.SetValues(characterController.transform.position.x, levelGenerator.GetLastChunk().transform.position.x);
+            StartCoroutine(WaitForCharacterControlWithLevel());
 
         }
 
+        private IEnumerator WaitForCharacterControlWithLevel () {
+
+            characterController.isControlledByPlayer = false;
+            StartCoroutine(uiState.WaitForHighscoreNotificationWithLevel(levelGenerator.currentLevel));
+            yield return new WaitForSeconds(3);
+            uiState.SetLevelCounterText(levelGenerator.currentLevel);
+            characterController.isControlledByPlayer = true;
+
+        }
+
+        private IEnumerator WaitForCharacterControl () {
+            characterController.isControlledByPlayer = false;
+            StartCoroutine(uiState.WaitForHighscoreNotification());
+            yield return new WaitForSeconds(2);
+            characterController.isControlledByPlayer = true;
+            uiState.SetLevelCounterText(levelGenerator.currentLevel);
+        }
         public void LeaveGame () {
 
             UIStateSelector.Instance.SetState("MenuUIState");

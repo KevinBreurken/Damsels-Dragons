@@ -118,15 +118,21 @@ namespace Base.UI.State {
 			highscoreLayer.interactable = false;
             highscoreLayer.blocksRaycasts = false;
 			highscoreLayer.alpha = 0;
+            highscoreLayer.DOKill();
+
 			optionsLayer.interactable = false;
             optionsLayer.blocksRaycasts = false;
             optionsLayer.alpha = 0;
+            optionsLayer.DOKill();
+
 			creditsLayer.interactable = false;
             creditsLayer.blocksRaycasts = false;
             creditsLayer.alpha = 0;
+            creditsLayer.DOKill();
 
 		}
 
+       
         public override void Enter () {
 
             base.Enter();

@@ -22,7 +22,7 @@ namespace Base.Game {
         private CameraController playerCamera;
         private InGameState gameState;
         private bool canDoubleJump;
-        private bool isControlledByPlayer;
+        public bool isControlledByPlayer;
         private Animator animator;
 		private bool pushesDownward;
 
