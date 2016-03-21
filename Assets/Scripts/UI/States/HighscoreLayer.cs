@@ -121,6 +121,7 @@ namespace Base.UI.State {
 			inputGroup.blocksRaycasts = false;
 			UpdateScoreList();
             ShowScore();
+
 		}
 
         public void ShowScore () {

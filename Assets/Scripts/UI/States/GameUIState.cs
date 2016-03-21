@@ -95,6 +95,7 @@ namespace Base.UI.State {
             levelCounter.Show();
             levelCounterText.text = "Level: " + _levelNum;
         }
+
         public override IEnumerator Exit () {
 
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished += FadeEffect_onFadeFinished;
