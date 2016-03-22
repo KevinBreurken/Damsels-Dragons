@@ -20,7 +20,7 @@ namespace Base.Game {
 			
 			collider.enabled = false;
 			coinRenderer.SetActive(false);
-            Score.ScoreManager.Instance.AddScore(100);
+            Score.ScoreManager.Instance.AddScore(30);
 			system.Stop();
 			system.Play();
 

@@ -176,7 +176,7 @@ namespace Base.Game {
                 if (isGrounded) {
 
 					rigidBody.velocity = Vector2.zero;
-					rigidBody.AddForce(new Vector2(0, 400));
+					rigidBody.AddForce(new Vector2(0, 500));
                     animator.SetTrigger("IsJumping");
 
                 } else {
@@ -184,7 +184,7 @@ namespace Base.Game {
                     if (canDoubleJump) {
 
 						rigidBody.velocity = Vector2.zero;
-						rigidBody.AddForce(new Vector2(0, 400));
+						rigidBody.AddForce(new Vector2(0, 500));
                         canDoubleJump = false;
                         animator.SetTrigger("IsJumping");
 
