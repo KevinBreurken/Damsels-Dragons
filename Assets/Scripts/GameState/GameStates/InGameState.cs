@@ -106,12 +106,15 @@ namespace Base.Game.State {
         }
 
         private IEnumerator WaitForCharacterControl () {
+
             characterController.isControlledByPlayer = false;
             StartCoroutine(uiState.WaitForHighscoreNotification());
             yield return new WaitForSeconds(2);
             characterController.isControlledByPlayer = true;
             uiState.SetLevelCounterText(levelGenerator.currentLevel);
+
         }
+
         public void LeaveGame () {
 
             UIStateSelector.Instance.SetState("MenuUIState");

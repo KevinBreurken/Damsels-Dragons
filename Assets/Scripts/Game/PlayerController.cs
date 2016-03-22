@@ -277,6 +277,7 @@ namespace Base.Game {
 
                             //Jumped on rock.
                             _col.GetComponent<Collider2D>().enabled = false;
+                            _col.GetComponent<ProjectileMovement>().HitByPlayer();
                             OnJumpedOnRock();
 
                         } else {

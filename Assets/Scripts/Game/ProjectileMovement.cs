@@ -10,6 +10,8 @@ namespace Base.Game {
 
         public LayerMask hitMask;
         public Ease easeType;
+        public GameObject particlePrefab;
+        private ParticleSystem instantiatedParticle;
 
 		private float speedFactor;
 		public float SpeedFactor {
@@ -43,11 +45,22 @@ namespace Base.Game {
 
             projectileCollider = GetComponent<Collider2D>();
 
+            //Check if theres a particle system for this Projectile.
+            if(particlePrefab != null) {
+                GameObject particleEffect = Instantiate(particlePrefab, transform.position, Quaternion.identity) as GameObject;
+                //particleEffect.hideFlags = HideFlags.HideInHierarchy;
+                instantiatedParticle = particleEffect.GetComponent<ParticleSystem>();
+            }
         }
 
         public void StartMove () {
 
-			StopAllCoroutines();
+            if (instantiatedParticle != null) {
+
+                instantiatedParticle.Stop();
+
+            }
+            StopAllCoroutines();
             transform.DOKill();
             isAtEnd = false;
             Vector2 moveToPosition = GetMoveToPosition();
@@ -61,7 +74,7 @@ namespace Base.Game {
 
             if (isAtEnd) {
 
-                ReturnToPool();
+                CheckForParticleEffect();
 
             } else {
 
@@ -90,20 +103,41 @@ namespace Base.Game {
 
             }
 				
-            ReturnToPool();
+            CheckForParticleEffect();
 
             return new Vector2(0, 0);
 
         }
 
-		public void ReturnToPool () {
+        public void HitByPlayer () {
 
+            CheckForParticleEffect();
+
+        }
+
+        public void Unload () {
+
+            transform.DOKill();
+            tweener.Kill();
             this.DOKill();
             gameObject.SetActive(false);
-			manager.RemoveFromList(this);
-			GetComponent<ObjectPoolReturnReference>().ReturnToPool();
+            manager.RemoveFromList(this);
+            GetComponent<ObjectPoolReturnReference>().ReturnToPool();
 
-		}
+        }
+		public void CheckForParticleEffect () {
+
+            //Activate particle if possible
+            if (instantiatedParticle != null) {
+
+                instantiatedParticle.transform.position = transform.position;
+                instantiatedParticle.Play();
+
+            }
+
+            Unload();
+
+        }
 
     }
 

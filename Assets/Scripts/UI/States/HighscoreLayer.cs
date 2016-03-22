@@ -92,16 +92,20 @@ namespace Base.UI.State {
             latestMatchScore = score;
             if (HighScoreManager.Instance.IsEligibleForHighscore(score)) {
 
-				newHighScore = score;
-                inputGroup.DOFade(1, 0.5f);
-                inputGroup.interactable = true;
-				inputGroup.blocksRaycasts = true;
-                ShowScoreWithNewScoreEmpty(score);
 
+                    newHighScore = score;
+                    inputGroup.DOFade(1, 0.5f);
+                    inputGroup.interactable = true;
+                    inputGroup.blocksRaycasts = true;
+                    ShowScoreWithNewScoreEmpty(score);
+                    ShowScore();
+
+                
             } else {
 				
 				HideInputPanel();
                 ShowScore();
+
             }
 
         }
@@ -126,20 +130,21 @@ namespace Base.UI.State {
 
         public void ShowScore () {
 
-            if(latestMatchScore == 0) {
-
-                scoreCanvasGroup.alpha = 0;
-
-            } else {
+            if (latestMatchScore != 0) {
 
                 scoreCanvasGroup.DOFade(1, 0.5f);
                 scoreText.text = "" + latestMatchScore;
+
+            } else {
+
+                scoreCanvasGroup.alpha = 0;
 
             }
 
         }
 
 		private void SubmitNewHighscore () {
+
 			List<HighScore> highscore = new List<HighScore>();
 
 			for (int i = 0; i < scoreList.Count; i++) {
@@ -160,6 +165,7 @@ namespace Base.UI.State {
             int index = HighScoreManager.Instance.FindPositionInHighscore(_score);
             if(index == 99)
             index = 0;
+
             List<HighScore> highscore = HighScoreManager.Instance.LoadScoreList();
             for (int i = 0; i < scoreList.Count; i++) {
                 if(i < index) {

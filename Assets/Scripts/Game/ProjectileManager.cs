@@ -52,7 +52,7 @@ namespace Base.Game {
 
             for (int i = 0; i < spawnedProjectiles.Count; i++) {
 
-                spawnedProjectiles[i].ReturnToPool();
+                spawnedProjectiles[i].Unload();
 
             }
 
