@@ -5,15 +5,33 @@ using Base.Management;
 
 namespace Base.Game {
 
-    
+    /// <summary>
+    /// Handles projectile movement.
+    /// </summary>
     public class ProjectileMovement : MonoBehaviour {
 
+        /// <summary>
+        /// The layer(s) the projectile bounces on.
+        /// </summary>
         public LayerMask hitMask;
+
+        /// <summary>
+        /// The easing type used in the tween movement.
+        /// </summary>
         public Ease easeType;
+
+        /// <summary>
+        /// The prefab for the used particle effect.
+        /// </summary>
         public GameObject particlePrefab;
         private ParticleSystem instantiatedParticle;
 
-		private float speedFactor;
+
+        private float speedFactor;
+        /// <summary>
+        /// The factor the projectile moves with.
+        /// Used for pre-baking movement.
+        /// </summary>
 		public float SpeedFactor {
 
 			get {
@@ -26,9 +44,9 @@ namespace Base.Game {
 
 				speedFactor = value;
 
-				if(tweener != null) {
+				if(tweemSequence != null) {
 
-					tweener.timeScale = speedFactor;
+					tweemSequence.timeScale = speedFactor;
 
 				}
 
@@ -36,8 +54,16 @@ namespace Base.Game {
 
 		}
 
+        /// <summary>
+        /// Reference to the manager this projectile uses.
+        /// </summary>
 		public ProjectileManager manager;
-		public Sequence tweener;
+
+        /// <summary>
+        /// the tween sequence used for movement..
+        /// </summary>
+		public Sequence tweemSequence;
+
         private bool isAtEnd;
         private Collider2D projectileCollider;
 
@@ -53,14 +79,19 @@ namespace Base.Game {
             }
         }
 
+        /// <summary>
+        /// Spawns and fires the projectile.
+        /// </summary>
         public void StartMove () {
-
+            
             if (instantiatedParticle != null) {
 
                 instantiatedParticle.Stop();
 
             }
+
             StopAllCoroutines();
+            
             transform.DOKill();
             isAtEnd = false;
             Vector2 moveToPosition = GetMoveToPosition();
@@ -70,7 +101,13 @@ namespace Base.Game {
 
         }
 
+        /// <summary>
+        /// Bounces the projectile to its next position.
+        /// </summary>
         public void Bounce () {
+
+            if (!gameObject.activeSelf)
+                return;
 
             if (isAtEnd) {
 
@@ -81,16 +118,16 @@ namespace Base.Game {
                 Vector2 moveToPosition = GetMoveToPosition();
                 moveToPosition.y += 1.5f;
 
-                tweener = transform.DOJump(moveToPosition, 5, 1, 1).OnComplete(Bounce).SetEase(easeType);
-                tweener.timeScale = speedFactor;
+                tweemSequence = transform.DOJump(moveToPosition, 5, 1, 1).OnComplete(Bounce).SetEase(easeType);
+                tweemSequence.timeScale = speedFactor;
 
             }
 
         }
 
         private Vector2 GetMoveToPosition () {
-
-            RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-3, 10), -Vector2.up, 20, hitMask.value);
+            
+            RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-4, 10), -Vector2.up, 20, hitMask.value);
             if (hit.collider != null) {
 
                 if(hit.collider.tag == "ProjectileEndTrigger") {
@@ -104,27 +141,54 @@ namespace Base.Game {
             }
 				
             CheckForParticleEffect();
-
+            isAtEnd = true;
             return new Vector2(0, 0);
 
         }
 
+        /// <summary>
+        /// Called when the player jumped on this projectile.
+        /// </summary>
         public void HitByPlayer () {
 
             CheckForParticleEffect();
 
         }
 
+        /// <summary>
+        /// Called when the game is loaded.
+        /// </summary>
+        public void OnGameLoad () {
+
+            if (instantiatedParticle != null) {
+
+                instantiatedParticle.transform.position = new Vector3(0,-1000,0);
+                instantiatedParticle.Stop();
+
+            }
+
+        }
+
+        /// <summary>
+        /// Called when the game switches out of the game state.
+        /// </summary>
         public void Unload () {
 
-            transform.DOKill();
-            tweener.Kill();
-            this.DOKill();
             gameObject.SetActive(false);
             manager.RemoveFromList(this);
             GetComponent<ObjectPoolReturnReference>().ReturnToPool();
 
+            transform.position = new Vector3(-100, -100, 0);
+           
+            transform.DOKill();
+            tweemSequence.Kill();
+            this.DOKill();
+
         }
+
+        /// <summary>
+        /// Checks if this projectile has a particle effect.
+        /// </summary>
 		public void CheckForParticleEffect () {
 
             //Activate particle if possible

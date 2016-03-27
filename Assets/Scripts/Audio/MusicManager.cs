@@ -6,6 +6,9 @@ using DG.Tweening;
 
 namespace Base.Audio {
 
+    /// <summary>
+    /// Handles Playing / Switching / Stop music.
+    /// </summary>
     public class MusicManager : MonoBehaviour {
 
         /// <summary>
@@ -13,14 +16,20 @@ namespace Base.Audio {
         /// </summary>
         public List<ListData> audioList;
 
+        /// <summary>
+        /// The AudioObjects that are created.
+        /// </summary>
         public List<AudioObject> createdSongObjects;
-
-        public float musicFadeOutSpeed;
 
         /// <summary>
         /// If the AudioObjects are visible in the hierarchy.
         /// </summary>
         public bool hideSongsInHierarchy;
+
+        /// <summary>
+        /// How fast the music fades out.
+        /// </summary>
+        public float musicFadeOutSpeed = 1;
 
         private static MusicManager instance = null;
         /// <summary>
@@ -61,6 +70,10 @@ namespace Base.Audio {
 
         }
 
+        /// <summary>
+        /// Tries to play a song, if a song is playing; stop that song.
+        /// </summary>
+        /// <param name="_song">The song that will be played.</param>
         public IEnumerator TryToPlaySong (AudioObject _song) {
 
             AudioObject objectThatIsPlaying = IsASongPlaying();
@@ -75,10 +88,14 @@ namespace Base.Audio {
 
         }
 
+        /// <summary>
+        /// Fades the music out and stops it.
+        /// </summary>
+        /// <param name="_song">The song that will be stopped.</param>
         public IEnumerator StopSong (AudioObject _song) {
 
-            _song.FadeVolume(1,0, 1);
-            yield return new WaitForSeconds(1);
+            _song.FadeVolume(_song.GetSource().volume,0, musicFadeOutSpeed);
+            yield return new WaitForSeconds(musicFadeOutSpeed);
             _song.GetSource().Stop();
 
         }
@@ -96,6 +113,10 @@ namespace Base.Audio {
 
         }
 
+        /// <summary>
+        /// Checks if a song is playing.
+        /// </summary>
+        /// <returns>The AudioObject that is playing.</returns>
         private AudioObject IsASongPlaying () {
 
             AudioObject check = null;
@@ -110,6 +131,11 @@ namespace Base.Audio {
 
         }
 
+        /// <summary>
+        /// Tries to find the AudioObject by its name.
+        /// </summary>
+        /// <param name="_name">The name of the song.</param>
+        /// <returns>The found AudioObject.</returns>
         public AudioObject GetSongByName(string _name) {
 
             AudioObject aObject = null;

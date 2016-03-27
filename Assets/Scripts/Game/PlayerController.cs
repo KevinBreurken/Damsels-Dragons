@@ -5,31 +5,58 @@ using Base.Control.Method;
 using Base.Game.State;
 using Base.Score;
 using DG.Tweening;
+using Base.Audio;
 
 namespace Base.Game {
 
+    /// <summary>
+    /// Controls the playable character.
+    /// </summary>
     public class PlayerController : MonoBehaviour {
-
-        public float movementSpeedFactor = 1.5f;
-        public float jumpStrength;
-        public LayerMask floorCollisionMask;
-        public float maxSpeed;
+   
+        //----------Graphics Related-------------------
+        [Header("Graphics")]
         public SpriteRenderer characterSprite;
+        private Animator animator;
+
+        //----------Movement Related-------------------
+        [Header("Movement")]
+        public bool isControlledByPlayer;
+        public float movementSpeedFactor = 1.5f;
+
+        private bool canDoubleJump;
+        private bool hasJumpKeyReleased;
+        private bool previousGrounded;
+        private bool isGrounded;
+
+        //----------Audio Related-------------------
+        [Header("Audio")]
+        public AudioObjectHolder jumpAudioObject;
+        public AudioObjectHolder doubleJumpAudioObject;
+        public AudioObjectHolder jumpRockAudioObject;
+        public AudioObjectHolder hitGroundAudioObject;
+        public AudioObjectHolder pickupCointAudioObject;
+        public AudioObjectHolder playerDeadAudioObject;
+
+        //----------Other Related-------------------
+        [Header("Other")]
+        public LayerMask floorCollisionMask;
 
         private Rigidbody2D rigidBody;
         private BaseInputMethod inputMethod;
-        private bool isGrounded;
         private CameraController playerCamera;
         private InGameState gameState;
-        private bool canDoubleJump;
-        public bool isControlledByPlayer;
-        private Animator animator;
-		private bool pushesDownward;
 
         void Awake () {
 
             rigidBody = GetComponent<Rigidbody2D>();
             animator = GetComponentInChildren<Animator>();
+            jumpAudioObject.CreateAudioObject();
+            doubleJumpAudioObject.CreateAudioObject();
+            hitGroundAudioObject.CreateAudioObject();
+            jumpRockAudioObject.CreateAudioObject();
+            pickupCointAudioObject.CreateAudioObject();
+            playerDeadAudioObject.CreateAudioObject();
 
         }
 
@@ -42,7 +69,7 @@ namespace Base.Game {
 
 		void FixedUpdate () {
 			
-			if(pushesDownward){
+			if(hasJumpKeyReleased){
 				
 				rigidBody.AddForce(new Vector2(0, -10));
 
@@ -52,10 +79,21 @@ namespace Base.Game {
 
         void Update () {
 
-            Vector3 vel = Vector3.ClampMagnitude(rigidBody.velocity, maxSpeed);
             if (isControlledByPlayer) {
 
-				pushesDownward = !inputMethod.GetDownInput();
+                if (previousGrounded != isGrounded) {
+
+                    if (isGrounded) {
+
+                        hitGroundAudioObject.GetAudioObject().Play();
+                
+                    }
+
+                    previousGrounded = isGrounded;
+
+                }
+
+                hasJumpKeyReleased = !inputMethod.GetDownInput();
 
                 float movementInput = inputMethod.GetMovementInput();
                 if (movementInput != 0) {
@@ -64,11 +102,9 @@ namespace Base.Game {
                     animator.SetBool("IsMoving", true);
 
                     //Flip the sprite.
-                    if(movementInput < 0) {
-                        characterSprite.flipX = true;
-                    } else if (movementInput > 0) {
-                        characterSprite.flipX = false;
-                    }
+                    if(movementInput < 0) { characterSprite.flipX = true;
+                    } else if (movementInput > 0) { characterSprite.flipX = false; }
+                    //---
 
                 } else {
 
@@ -80,11 +116,8 @@ namespace Base.Game {
             
             //Detect if character is grounded.
             isGrounded = false;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++) { CastToGround(new Vector3(-0.4f + (0.4f * i), 0, 0)); }
 
-                CastToGround(new Vector3(-0.4f + (0.4f * i), 0, 0));
-
-            }
             animator.SetBool("IsGrounded", isGrounded);
 
             //Add slowdown.
@@ -155,7 +188,7 @@ namespace Base.Game {
 
             yield return new WaitForSeconds(3);
             isControlledByPlayer = true;
-            playerCamera.ResumeFollowingTarget();
+            playerCamera.RefocusTarget();
 
         }
 
@@ -164,6 +197,7 @@ namespace Base.Game {
             Time.timeScale = 0;
 			isControlledByPlayer = false;
             transform.DOJump(transform.position + new Vector3(-1, -9, 0), 5, 1, 2).SetUpdate(true).OnComplete(gameState.LeaveGame);
+            playerDeadAudioObject.GetAudioObject().Play();
 
         }
 
@@ -178,6 +212,7 @@ namespace Base.Game {
 					rigidBody.velocity = Vector2.zero;
 					rigidBody.AddForce(new Vector2(0, 500));
                     animator.SetTrigger("IsJumping");
+                    jumpAudioObject.GetAudioObject().Play();
 
                 } else {
 
@@ -187,6 +222,7 @@ namespace Base.Game {
 						rigidBody.AddForce(new Vector2(0, 500));
                         canDoubleJump = false;
                         animator.SetTrigger("IsJumping");
+                        doubleJumpAudioObject.GetAudioObject().Play();
 
                     }
 
@@ -201,6 +237,7 @@ namespace Base.Game {
             transform.DOMoveY(transform.position.y + 5, 0.35f).OnComplete(OnRockJumpComplete);
             canDoubleJump = true;
             ScoreManager.Instance.AddScore(15);
+            jumpRockAudioObject.GetAudioObject().Play();
 
         }
 
@@ -253,6 +290,7 @@ namespace Base.Game {
 					if (_col.gameObject.tag == "Coin") {
 
                         _col.gameObject.GetComponent<CoinPickup>().Pickup();
+                        pickupCointAudioObject.GetAudioObject().Play();
 
 					}
 

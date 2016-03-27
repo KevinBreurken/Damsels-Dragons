@@ -66,6 +66,11 @@ namespace Base.Audio {
 
         }
 
+        /// <summary>
+        /// Creates a new AudioObject with a prefab.
+        /// </summary>
+        /// <param name="_object">The prefab that will be created.</param>
+        /// <returns></returns>
         public AudioObject CreateAudioInstance(GameObject _object) {
 
             GameObject audioGameObject = Instantiate(_object);

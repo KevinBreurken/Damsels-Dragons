@@ -44,6 +44,7 @@ namespace Base.UI {
             return canvasGroup;
 
         }
+
         public virtual void Awake () {
             //Initialize the animation data.
             showAnimationData.Initialize(transform);

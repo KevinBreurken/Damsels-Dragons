@@ -9,7 +9,6 @@ using Base.Game;
 
 namespace Base.UI.State {
 
-
     /// <summary>
     /// The menu state of the game.
     /// </summary>
@@ -156,7 +155,7 @@ namespace Base.UI.State {
 
 			}
 
-			HighScoreManager.Instance.SaveScoreList(highscore);
+			HighScoreManager.Instance.SaveHighScoreList(highscore);
 
 		}
 
@@ -166,7 +165,7 @@ namespace Base.UI.State {
             if(index == 99)
             index = 0;
 
-            List<HighScore> highscore = HighScoreManager.Instance.LoadScoreList();
+            List<HighScore> highscore = HighScoreManager.Instance.LoadHighScoreList();
             for (int i = 0; i < scoreList.Count; i++) {
                 if(i < index) {
                     scoreList[i].transform.FindChild("Score").GetComponent<Text>().text = "" + highscore[i].score;
@@ -187,7 +186,7 @@ namespace Base.UI.State {
 
         private void UpdateScoreList () {
 
-            List<HighScore> highscore = HighScoreManager.Instance.LoadScoreList();
+            List<HighScore> highscore = HighScoreManager.Instance.LoadHighScoreList();
             for (int i = 0; i < scoreList.Count; i++) {
 
                 scoreList[i].transform.FindChild("Score").GetComponent<Text>().text = "" +  highscore[i].score;

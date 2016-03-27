@@ -16,24 +16,31 @@ namespace Base.Control.Method {
         public event InputEvent onJumpPressed;
 
 		public KeyCode downInputKey;
-        public bool usesMouse;
 
+        /// <summary>
+        /// Checks what the horizontal movement input is.
+        /// </summary>
 		public virtual float GetMovementInput () {
 
 			return 0.0f;
 
         }
 
+        /// <summary>
+        /// Checks if the down key is pressed.
+        /// </summary>
+        /// <returns></returns>
 		public virtual bool GetDownInput () {
 
 			return Input.GetKey(downInputKey);
 
 		}
 
-        public virtual void Update () {
-            
-        }
+        public virtual void Update () { }
 
+        /// <summary>
+        /// Fires the jump event.
+        /// </summary>
         public void FireJumpEvent () {
 
             if(onJumpPressed != null) {

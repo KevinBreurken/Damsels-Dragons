@@ -37,6 +37,11 @@ namespace Base {
 
         }
         
+        /// <summary>
+        /// Gets the state by its name.
+        /// </summary>
+        /// <param name="_stateName">The name of the state.</param>
+        /// <returns>The found state.</returns>
         public BaseState GetState(string _stateName) {
 
             BaseState foundState = null;
@@ -55,6 +60,10 @@ namespace Base {
 
         }
 
+        /// <summary>
+        /// Changes the State by its name.
+        /// </summary>
+        /// <param name="_nextState">the name of the state.</param>
         public void SetState (string _nextState) {
 
             BaseState foundState = null;
@@ -79,6 +88,10 @@ namespace Base {
             
         }
 
+        /// <summary>
+        /// Changes the State.
+        /// </summary>
+        /// <param name="_nextState">The new state.</param>
         public IEnumerator SetState (BaseState _nextState) {
 
             if(_nextState == currentState) {
@@ -101,8 +114,12 @@ namespace Base {
             currentState.Enter();
             nextState = null;
             OnStateEntered();
+
         }
 
+        /// <summary>
+        /// Called when the state is entered.
+        /// </summary>
         public virtual void OnStateEntered () {
 
         }

@@ -33,7 +33,7 @@ namespace Base.Game {
 
             fireProjectilePool = firePoolObject.AddComponent<ObjectPool>();
             fireProjectilePool.hidePooledObjectsInHierarchy = false;
-            fireProjectilePool.Initialize(fireProjectilePrefab, 20, true);
+            fireProjectilePool.Initialize(fireProjectilePrefab, 40, true);
 
             //For the fire projectiles
             GameObject stonePoolObject = new GameObject();
@@ -42,14 +42,16 @@ namespace Base.Game {
 
             stoneProjectilePool = stonePoolObject.AddComponent<ObjectPool>();
             stoneProjectilePool.hidePooledObjectsInHierarchy = false;
-            stoneProjectilePool.Initialize(stoneProjectilePrefab, 20, true);
+            stoneProjectilePool.Initialize(stoneProjectilePrefab, 40, true);
 
         }
 
+        /// <summary>
+        /// Unloads all current spawned projectiles.
+        /// </summary>
         public void Unload () {
-
+            
             StopAllCoroutines();
-
             for (int i = 0; i < spawnedProjectiles.Count; i++) {
 
                 spawnedProjectiles[i].Unload();
@@ -58,6 +60,9 @@ namespace Base.Game {
 
         }
 
+        /// <summary>
+        /// Starts the projectile sequence and pre-bakes it.
+        /// </summary>
         public void StartSpawning () {
 
             canSpawn = true;
@@ -66,6 +71,9 @@ namespace Base.Game {
 
         }
 
+        /// <summary>
+        /// Begins a new projectile sequence.
+        /// </summary>
         public void StartSequence () {
 
             currentSequence = projectileSequences[Random.Range(0,projectileSequences.Length)];

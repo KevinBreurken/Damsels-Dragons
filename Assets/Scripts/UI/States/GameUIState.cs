@@ -9,19 +9,26 @@ using UnityEngine.UI;
 namespace Base.UI.State {
 
     /// <summary>
-    /// Not yet finished. acts as dummy.
+    /// The UI state used in-game.
     /// </summary>
     public class GameUIState : BaseUIState {
 
+        /// <summary>
+        /// The state that is entered after this state is left.
+        /// </summary>
         public BaseGameState nextGameState;
 
-        //next level notification
-        public CanvasGroup nextLevelNotificationLayer;
-        public UIObject nextLevelReadyObject;
-        public UIObject nextLevelGoObject;
-        public UIObject nextLevelLevelObject;
+        /// <summary>
+        /// The canvas group of the pop-up notification.
+        /// </summary>
+        [Header("Next level animation")]
+        public CanvasGroup popupNotificationLayer;
+        public UIObject popupReadyObject;
+        public UIObject popupNextLevelGoObject;
+        public UIObject popupLevelObject;
         public Text nextLevelText;
 
+        [Header("Level Counter")]
         public UIObject levelCounter;
         public Text levelCounterText;
 
@@ -36,66 +43,84 @@ namespace Base.UI.State {
 
         }
 
-        public IEnumerator WaitForHighscoreNotification () {
+        /// <summary>
+        /// Plays the highscore notification.
+        /// </summary>
+        public IEnumerator PlayNextLevelNotification () {
 
-            nextLevelGoObject.GetCanvasGroup().alpha = 0;
-            nextLevelReadyObject.GetCanvasGroup().alpha = 0;
-            nextLevelLevelObject.GetCanvasGroup().alpha = 0;
+            popupNextLevelGoObject.GetCanvasGroup().alpha = 0;
+            popupReadyObject.GetCanvasGroup().alpha = 0;
+            popupLevelObject.GetCanvasGroup().alpha = 0;
 
-            nextLevelNotificationLayer.interactable = true;
-            nextLevelNotificationLayer.blocksRaycasts = true;
-            nextLevelNotificationLayer.alpha = 0;
-            nextLevelNotificationLayer.DOFade(1, 1);
+            popupNotificationLayer.interactable = true;
+            popupNotificationLayer.blocksRaycasts = true;
+            popupNotificationLayer.alpha = 0;
+            popupNotificationLayer.DOFade(1, 1);
 
-            nextLevelReadyObject.Show();
+            popupReadyObject.Show();
             yield return new WaitForSeconds(1);
-            nextLevelReadyObject.GetCanvasGroup().DOFade(0, 0.5f);
-            nextLevelGoObject.Show();
+
+            popupReadyObject.GetCanvasGroup().DOFade(0, 0.5f);
+            popupNextLevelGoObject.Show();
             yield return new WaitForSeconds(1);
-            nextLevelGoObject.GetCanvasGroup().DOFade(0, 0.5f);
 
-            nextLevelNotificationLayer.DOFade(0, 0.5f);
+            popupNextLevelGoObject.GetCanvasGroup().DOFade(0, 0.5f);
+            popupNotificationLayer.DOFade(0, 0.5f);
 
-            nextLevelNotificationLayer.interactable = false;
-            nextLevelNotificationLayer.blocksRaycasts = false;
+            popupNotificationLayer.interactable = false;
+            popupNotificationLayer.blocksRaycasts = false;
 
         }
 
-        public IEnumerator WaitForHighscoreNotificationWithLevel (int _levelNum) {
+        /// <summary>
+        /// Plays the highscore notification. also shows the next level.
+        /// </summary>
+        public IEnumerator PlayNextLevelNotificationWithLevel (int _levelNum) {
 
             nextLevelText.text = "" + _levelNum;
 
-            nextLevelGoObject.GetCanvasGroup().alpha = 0;
-            nextLevelReadyObject.GetCanvasGroup().alpha = 0;
-            nextLevelLevelObject.GetCanvasGroup().alpha = 0;
+            popupNextLevelGoObject.GetCanvasGroup().alpha = 0;
+            popupReadyObject.GetCanvasGroup().alpha = 0;
+            popupLevelObject.GetCanvasGroup().alpha = 0;
 
-            nextLevelNotificationLayer.interactable = true;
-            nextLevelNotificationLayer.blocksRaycasts = true;
-            nextLevelNotificationLayer.alpha = 0;
-            nextLevelNotificationLayer.DOFade(1, 1);
+            popupNotificationLayer.interactable = true;
+            popupNotificationLayer.blocksRaycasts = true;
+            popupNotificationLayer.alpha = 0;
+            popupNotificationLayer.DOFade(1, 1);
 
-            nextLevelLevelObject.Show();
+            popupLevelObject.Show();
             yield return new WaitForSeconds(1);
-            nextLevelLevelObject.GetCanvasGroup().DOFade(0, 0.5f);
-            nextLevelReadyObject.Show();
-            yield return new WaitForSeconds(1);
-            nextLevelReadyObject.GetCanvasGroup().DOFade(0, 0.5f);
-            nextLevelGoObject.Show();
-            yield return new WaitForSeconds(1);
-            nextLevelGoObject.GetCanvasGroup().DOFade(0, 0.5f);
 
-            nextLevelNotificationLayer.DOFade(0, 0.5f);
+            popupLevelObject.GetCanvasGroup().DOFade(0, 0.5f);
+            popupReadyObject.Show();
+            yield return new WaitForSeconds(1);
 
-            nextLevelNotificationLayer.interactable = false;
-            nextLevelNotificationLayer.blocksRaycasts = false;
+            popupReadyObject.GetCanvasGroup().DOFade(0, 0.5f);
+            popupNextLevelGoObject.Show();
+            yield return new WaitForSeconds(1);
+
+            popupNextLevelGoObject.GetCanvasGroup().DOFade(0, 0.5f);
+            popupNotificationLayer.DOFade(0, 0.5f);
+
+            popupNotificationLayer.interactable = false;
+            popupNotificationLayer.blocksRaycasts = false;
 
         }
 
-        public void SetLevelCounterText(int _levelNum) {
+        /// <summary>
+        /// Sets the level counter.
+        /// </summary>
+        /// <param name="_levelNumber">Current level number.</param>
+        public void SetLevelCounterText(int _levelNumber) {
+
             levelCounter.Show();
-            levelCounterText.text = "Level: " + _levelNum;
+            levelCounterText.text = "Level: " + _levelNumber;
+
         }
 
+        /// <summary>
+        /// Called when the state is left.
+        /// </summary>
         public override IEnumerator Exit () {
 
             Effect.EffectManager.Instance.FadeEffect.onFadeFinished += FadeEffect_onFadeFinished;

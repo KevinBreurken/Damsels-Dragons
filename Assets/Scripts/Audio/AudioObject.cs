@@ -86,6 +86,10 @@ namespace Base.Audio {
 
         }
 
+        /// <summary>
+        /// Attaches this AudioObject to a given transform.
+        /// </summary>
+        /// <param name="_parent">The transform this audioObject will be parented to.</param>
         public void SetOnPosition(Transform _parent) {
 
             gameObject.transform.parent = _parent;
@@ -132,12 +136,22 @@ namespace Base.Audio {
 
         }
 
+        /// <summary>
+        /// Adjusts the volume of this AudioObject.
+        /// </summary>
+        /// <param name="_volume"></param>
         public void SetVolume(float _volume) {
 
             source.volume = _volume;
 
         }
 
+        /// <summary>
+        /// Fades the AudiObject's volume.
+        /// </summary>
+        /// <param name="_startVolume">The starting volume.</param>
+        /// <param name="_endVolume">The end volume.</param>
+        /// <param name="_duration">The fade duration.</param>
         public void FadeVolume(float _startVolume, float _endVolume,float _duration) {
 
             source.volume = _startVolume;
@@ -145,6 +159,10 @@ namespace Base.Audio {
            
         }
 
+        /// <summary>
+        /// Returns the AudioSource of this AudioObject.
+        /// </summary>
+        /// <returns>The AudioSource.</returns>
         public AudioSource GetSource () {
 
             return source;

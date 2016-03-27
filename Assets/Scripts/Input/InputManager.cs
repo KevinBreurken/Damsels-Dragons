@@ -41,6 +41,9 @@ namespace Base.Control {
 
 		public delegate void InputChangeEvent (BaseInputMethod _changedMethod);
 
+        /// <summary>
+        /// Called when the input method is changed.
+        /// </summary>
 		public event InputChangeEvent onInputChanged;
 
         /// <summary>
@@ -80,6 +83,9 @@ namespace Base.Control {
 
         }
 
+        /// <summary>
+        /// Returns the currently used Input Method.
+        /// </summary>
 		public BaseInputMethod GetCurrentInputMethod () {
 			
 			return currentlyUsedInputMethod;

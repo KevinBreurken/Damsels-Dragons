@@ -3,32 +3,48 @@ using System.Collections;
 
 namespace Base.Game {
 	
+    /// <summary>
+    /// The pickup thats the playable character can pickup.
+    /// </summary>
 	public class CoinPickup : MonoBehaviour {
 
-		public GameObject coinRenderer;
-		private Collider2D collider;
-		public ParticleSystem system;
+        /// <summary>
+        /// The GameObject that holds the graphic of the coin.
+        /// </summary>
+        public GameObject coinRenderer;
 
-		void Awake () {
+        /// <summary>
+        /// The particle effect that is played when the player picks up the coin.
+        /// </summary>
+		public ParticleSystem particleEffect;
+
+        private Collider2D coinCollider;
+
+        void Awake () {
 			
-			collider = GetComponent<Collider2D>();
+			coinCollider = GetComponent<Collider2D>();
 		
 		}
 
-
+        /// <summary>
+        /// Picks up the coin, and disables the object.
+        /// </summary>
 		public void Pickup () {
 			
-			collider.enabled = false;
+			coinCollider.enabled = false;
 			coinRenderer.SetActive(false);
             Score.ScoreManager.Instance.AddScore(30);
-			system.Stop();
-			system.Play();
+			particleEffect.Stop();
+			particleEffect.Play();
 
 		}
 
+        /// <summary>
+        /// Resets this CoinPickup.
+        /// </summary>
 		public void Reset () {
 			
-			collider.enabled = true;
+			coinCollider.enabled = true;
 			coinRenderer.SetActive(true);
 
 		}

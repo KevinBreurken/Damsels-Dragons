@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace Base.Effect {
 
+    /// <summary>
+    /// A singleton that handles all effects.
+    /// </summary>
     public class EffectManager : MonoBehaviour {
 
         private static EffectManager instance = null;
@@ -32,6 +35,9 @@ namespace Base.Effect {
 
         }
 
+        /// <summary>
+        /// Reference to the FadeEffect class.
+        /// </summary>
         public FadeEffect FadeEffect;
 
     }

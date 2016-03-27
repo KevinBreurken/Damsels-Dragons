@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
+/// <summary>
+/// Handles the contrast. Made by willywill on armedUnity.com
+/// http://armedunity.com/topic/4950-brightnesscontrastsaturation-shader/
+/// </summary>
 [ExecuteInEditMode]
 public class RenderImage : MonoBehaviour {
     #region Variables

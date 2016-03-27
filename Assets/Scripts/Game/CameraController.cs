@@ -5,7 +5,7 @@ using DG.Tweening;
 namespace Base.Game {
 
     public class CameraController : MonoBehaviour {
-
+        
         public delegate void CameraEvent ();
 
         /// <summary>
@@ -13,18 +13,21 @@ namespace Base.Game {
         /// </summary>
         public event CameraEvent onCameraScrolled;
 
+        [Header("Target")]
         public bool followTarget;
         public Transform target;
+
+        [Header("Positioning")]
+        public Vector3 offset;
+        public float cameraFollowDistance;
+
+        [HideInInspector]
         public Camera gameViewCamera;
 
-        private Vector3 velocity = Vector3.zero;
-        public float dampTime = 0.15f;
-        public Vector3 offset;
-        private float jumpOffset;
-        public float cameraFollowDistance;
         private GameObject cameraLookPoint;
-
+        private float jumpOffset;
         private float verticalPostion;
+        private Vector3 velocity = Vector3.zero;
 
         // Use this for initialization
         void Awake () {
@@ -36,7 +39,10 @@ namespace Base.Game {
 
         }
 
-        public void ResumeFollowingTarget () {
+        /// <summary>
+        /// Refocuses the target.
+        /// </summary>
+        public void RefocusTarget () {
 
             cameraLookPoint.transform.position = gameViewCamera.ViewportToWorldPoint(new Vector3(0.25f, 0.5f, 0));
             followTarget = true;
@@ -60,7 +66,7 @@ namespace Base.Game {
                     jumpOffset -= 0.1f;
                 }
 
-                transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
+                transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, 0.15f);
                 transform.position = new Vector3(transform.position.x, offset.y + jumpOffset, 0);
 
                 if (target.transform.position.x > cameraLookPoint.transform.position.x) {
@@ -79,6 +85,9 @@ namespace Base.Game {
 
         }
 
+        /// <summary>
+        /// Places the camera at the maps starting position.
+        /// </summary>
         public void SetAtStartPosition () {
 
             transform.position = new Vector2(-3.201591f, 0.65f);
@@ -87,13 +96,17 @@ namespace Base.Game {
             Vector3 delta = cameraLookPoint.transform.position - gameViewCamera.ViewportToWorldPoint(new Vector3(0.25f, 0.5f, point.z)); //(new Vector3(0.5, 0.5, point.z));
             Vector3 destination = transform.position + delta + offset;
 
-            transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
+            transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, 0.15f);
             transform.position = new Vector3(transform.position.x, offset.y, 0);
 
             cameraLookPoint.transform.position = new Vector3(target.transform.position.x, target.transform.position.y);
 
         }
 
+        /// <summary>
+        /// Locks the camera to a given chunk.
+        /// </summary>
+        /// <param name="_chunk">The chunk that will be focused.</param>
 		public void FixateChunk (ChunkData _chunk){
 
             Vector3 point = gameViewCamera.WorldToViewportPoint(_chunk.transform.position);

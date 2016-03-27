@@ -5,16 +5,25 @@ using UnityEngine.Audio;
 
 namespace Base.UI.States {
 
+    /// <summary>
+    /// Layer that contains all options related GUI content.
+    /// </summary>
     public class OptionsLayer : MonoBehaviour {
 
-        public RenderImage contrast;
-        public Slider contrastSlider;
+        /// <summary>
+        /// The script that handles contrast.
+        /// </summary>
+        public RenderImage contrastScript;
 
+        public Slider contrastSlider;
         public Slider MasterSlider;
         public Slider MusicSlider;
         public Slider SFXSlider;
         public Slider InterfaceSlider;
 
+        /// <summary>
+        /// Reference to the AudioMixer.
+        /// </summary>
         public AudioMixer mixer;
 
         // Use this for initialization
@@ -26,33 +35,44 @@ namespace Base.UI.States {
             SFXSlider.onValueChanged.AddListener(delegate { OnSFXChanged(); });
             InterfaceSlider.onValueChanged.AddListener(delegate { OnUIChanged(); });
 
-            SetDefaultMusicValues();
+            //SetDefaultMusicValues();
             SetSliders();
 
         }
 
-        void OnMasterChanged () {
+        private void OnMasterChanged () {
+
             PlayerPrefs.SetFloat("Volume_Master", MasterSlider.value);
             mixer.SetFloat("Volume_Master", MasterSlider.value);
+
         }
-        void OnMusicChanged () {
+
+        private void OnMusicChanged () {
+
             PlayerPrefs.SetFloat("Volume_Music", MusicSlider.value);
             mixer.SetFloat("Volume_Music", MusicSlider.value);
+
         }
-        void OnSFXChanged () {
+
+        private void OnSFXChanged () {
+
             PlayerPrefs.SetFloat("Volume_SFX", SFXSlider.value);
             mixer.SetFloat("Volume_SFX", SFXSlider.value);
+
         }
-        void OnUIChanged () {
+
+        private void OnUIChanged () {
+
             PlayerPrefs.SetFloat("Volume_UI", InterfaceSlider.value);
             mixer.SetFloat("Volume_UI", InterfaceSlider.value);
+
         }
 
-        void SetSliders () {
+        private void SetSliders () {
 
-            contrastSlider.value = contrast.brightnessAmount;
-            contrast.brightnessAmount = PlayerPrefs.GetFloat("Contrast");
-            contrastSlider.value = contrast.brightnessAmount;
+            contrastSlider.value = contrastScript.brightnessAmount;
+            contrastScript.brightnessAmount = PlayerPrefs.GetFloat("Contrast");
+            contrastSlider.value = contrastScript.brightnessAmount;
 
             float masterValue = PlayerPrefs.GetFloat("Volume_Master");
             MasterSlider.value = masterValue;
@@ -72,27 +92,28 @@ namespace Base.UI.States {
 
         }
 
-        void SetDefaultMusicValues () {
+        private void SetDefaultMusicValues () {
 
-            float val;
-            mixer.GetFloat("Volume_Master", out val);
-            PlayerPrefs.SetFloat("Volume_Master", val);
+            float outputValue;
 
-            mixer.GetFloat("Volume_SFX", out val);
-            PlayerPrefs.SetFloat("Volume_SFX", val);
+            mixer.GetFloat("Volume_Master", out outputValue);
+            PlayerPrefs.SetFloat("Volume_Master", outputValue);
 
-            mixer.GetFloat("Volume_Music", out val);
-            PlayerPrefs.SetFloat("Volume_Music", val);
+            mixer.GetFloat("Volume_SFX", out outputValue);
+            PlayerPrefs.SetFloat("Volume_SFX", outputValue);
 
-            mixer.GetFloat("Volume_UI", out val);
-            PlayerPrefs.SetFloat("Volume_UI", val);
+            mixer.GetFloat("Volume_Music", out outputValue);
+            PlayerPrefs.SetFloat("Volume_Music", outputValue);
+
+            mixer.GetFloat("Volume_UI", out outputValue);
+            PlayerPrefs.SetFloat("Volume_UI", outputValue);
 
         }
 
-        void ContrastChanged () {
+        private void ContrastChanged () {
 
-            contrast.brightnessAmount = contrastSlider.value;
-            PlayerPrefs.SetFloat("Contrast", contrast.brightnessAmount);
+            contrastScript.brightnessAmount = contrastSlider.value;
+            PlayerPrefs.SetFloat("Contrast", contrastScript.brightnessAmount);
 
         }
 

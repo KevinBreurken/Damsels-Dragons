@@ -49,7 +49,7 @@ namespace Base.Management {
 
             for (int i = 0; i < _startingAmount; i++) {
 
-                CreateNewPooledObject();
+                CreateNewPooledObject(i);
 
             }
 
@@ -65,7 +65,7 @@ namespace Base.Management {
 
                 if (createsNewObjects) {
 
-                    CreateNewPooledObject();
+                    CreateNewPooledObject(99);
 
                 } else {
 
@@ -89,12 +89,12 @@ namespace Base.Management {
         /// Creates a new pool GameObject.
         /// </summary>
         /// <returns>The new GameObject.</returns>
-        private GameObject CreateNewPooledObject () {
+        private GameObject CreateNewPooledObject (int _index) {
 
             totalAmountOfObjectsCreated++;
 
             GameObject pooledObject = Object.Instantiate(objectToPool, objectToPool.transform.position, objectToPool.transform.rotation) as GameObject;
-            pooledObject.name = "[PooledObject] " + objectToPool.name;
+            pooledObject.name = "[PooledObject] " + objectToPool.name + _index;
             pooledObject.hideFlags = hidePooledObjectsInHierarchy ? HideFlags.HideInHierarchy : HideFlags.None;
             pooledObject.SetActive(false);
             pooledObject.transform.parent = this.transform;

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Base.Game {
 
+    /// <summary>
+    /// Holds data thats contained in a chunk.
+    /// </summary>
     public class ChunkData : MonoBehaviour {
 
         /// <summary>
@@ -13,7 +16,7 @@ namespace Base.Game {
         public Transform endPoint;
 
         private int chunkLenght;
-        private CoinPickup[] coinpickups;
+        private CoinPickup[] coinPickups;
 
         public virtual void Awake () {
 
@@ -23,7 +26,7 @@ namespace Base.Game {
             Transform pickupHolder = transform.FindChild("Pickups");
             if(pickupHolder != null) {
 
-                coinpickups = pickupHolder.GetComponentsInChildren<CoinPickup>();
+                coinPickups = pickupHolder.GetComponentsInChildren<CoinPickup>();
 
             }
 
@@ -67,11 +70,11 @@ namespace Base.Game {
 
             gameObject.SetActive(true);
 
-            if (coinpickups != null) {
+            if (coinPickups != null) {
 
-                for (int i = 0; i < coinpickups.Length; i++) {
+                for (int i = 0; i < coinPickups.Length; i++) {
 
-                    coinpickups[i].Reset();
+                    coinPickups[i].Reset();
 
                 }
 

@@ -4,12 +4,26 @@ using System.Collections.Generic;
 
 namespace Base.Game {
 
+    /// <summary>
+    /// Generates levels.
+    /// </summary>
     public class LevelGenerator : MonoBehaviour {
 
         public int currentLevel;
 
+        /// <summary>
+        /// The starting chunk of the game.
+        /// </summary>
         public GameObject spawnChunkPrefab;
+
+        /// <summary>
+        /// The end chunk of a level.
+        /// </summary>
         public GameObject endChunkPrefab;
+
+        /// <summary>
+        /// The chunks that are spawned in between end and/or spawn chunks.
+        /// </summary>
         public List<GameObject> chunkPrefabs;
 
         private ChunkData spawnChunk;
@@ -29,7 +43,6 @@ namespace Base.Game {
             chunkHolder.transform.parent = this.transform;
 
             //Create all chunks.
-            
             spawnChunk = CreateChunk(spawnChunkPrefab);
             endChunk.Add(CreateChunk(endChunkPrefab));
             endChunk.Add(CreateChunk(endChunkPrefab));
@@ -43,6 +56,10 @@ namespace Base.Game {
             
         }
 
+        /// <summary>
+        /// Gets the last chunk that is spawned.
+        /// </summary>
+        /// <returns>The last spawned chunk.</returns>
         public GameObject GetLastChunk () {
 
             return endChunk[lastEndPoint].gameObject;

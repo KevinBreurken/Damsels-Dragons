@@ -4,13 +4,24 @@ using System.Collections.Generic;
 
 namespace Base.Score {
 
+    /// <summary>
+    /// Handles loading and saving highscore data.
+    /// </summary>
     public class HighScoreManager : MonoBehaviour {
 
         /// <summary>
         /// Default Highscore used when clearing playerprefs.
         /// </summary>
         public List<HighScore> factoryHighscores = new List<HighScore>();
+
+        /// <summary>
+        /// Current Highscore list.
+        /// </summary>
         public List<HighScore> highscores = new List<HighScore>();
+
+        /// <summary>
+        /// If the highscore will be cleared to the factoryHighscores.
+        /// </summary>
         public bool clearHighscores;
 
         protected static HighScoreManager instance = null;
@@ -45,15 +56,20 @@ namespace Base.Score {
 
             if (clearHighscores) {
 
-                SaveScoreList(factoryHighscores);
+                SaveHighScoreList(factoryHighscores);
 
             }
+
             highscores.Clear();
-            highscores = LoadScoreList();
+            highscores = LoadHighScoreList();
 
         }
 
-        public void SaveScoreList(List<HighScore> highscores) {
+        /// <summary>
+        /// Saves the current Highscore in PlayerPrefs.
+        /// </summary>
+        /// <param name="highscores">The highscore list.</param>
+        public void SaveHighScoreList(List<HighScore> highscores) {
 
             for (int i = 0; i < highscores.Count; i++) {
 
@@ -65,7 +81,11 @@ namespace Base.Score {
 
         }
 
-        public List<HighScore> LoadScoreList () {
+        /// <summary>
+        /// Loads the Highscore that is stored in PlayerPrefs.
+        /// </summary>
+        /// <returns>The highscore list.</returns>
+        public List<HighScore> LoadHighScoreList () {
 
             List<HighScore> inDataHighscoreList = new List<HighScore>();
 
@@ -79,10 +99,16 @@ namespace Base.Score {
 
         }
 
-        private void SaveScore (int _index, string _name, int _score) {
+        /// <summary>
+        /// Saves a score.
+        /// </summary>
+        /// <param name="_rank">The rank of the player his score.</param>
+        /// <param name="_name">The name of the player.</param>
+        /// <param name="_score">The score of the player.</param>
+        private void SaveScore (int _rank, string _name, int _score) {
 
-            PlayerPrefs.SetString("PLAYER" + _index + "[NAME]", _name);
-            PlayerPrefs.SetInt("PLAYER" + _index + "[Score]", _score);
+            PlayerPrefs.SetString("PLAYER" + _rank + "[NAME]", _name);
+            PlayerPrefs.SetInt("PLAYER" + _rank + "[Score]", _score);
 
         }
 
@@ -95,8 +121,12 @@ namespace Base.Score {
 
         }
 
+        /// <summary>
+        /// Checks if the score is eligible to placed in the highscore.
+        /// </summary>
+        /// <param name="_value">The score that will be checked.</param>
         public bool IsEligibleForHighscore(int _value) {
-            Debug.Log(highscores[9]);
+
             if(highscores[9].score < _value) {
 
                 return true;
@@ -107,13 +137,18 @@ namespace Base.Score {
 
         }
 
-        public int FindPositionInHighscore (int _value) {
+        /// <summary>
+        /// Finds the position of the given score.
+        /// </summary>
+        /// <param name="_scoreValue">The score value.</param>
+        /// <returns></returns>
+        public int FindPositionInHighscore (int _scoreValue) {
 
             int currentIndex = 99;
 
             for (int i = 0; i < highscores.Count; i++) {
 
-                if (highscores[i].score < _value) {
+                if (highscores[i].score < _scoreValue) {
                    
                     return i;
 
@@ -127,10 +162,20 @@ namespace Base.Score {
 
     }
 
+    /// <summary>
+    /// Contains highscoreData.
+    /// </summary>
     [System.Serializable]
     public struct HighScore {
 
+        /// <summary>
+        /// Name of the player.
+        /// </summary>
         public string name;
+        
+        /// <summary>
+        /// The score made in-game.
+        /// </summary>
         public int score;
 
     }

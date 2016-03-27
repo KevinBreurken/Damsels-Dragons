@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Math {
 
+    /// <summary>
+    /// Contains functions used for calculations.
+    /// </summary>
     public class Calculate : MonoBehaviour {
 
         public static float GetHighestFromList (List<float> list) {

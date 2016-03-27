@@ -9,6 +9,9 @@ namespace Base.Control.Method {
     /// </summary>
     public class KeyboardInputMethod : BaseInputMethod {
 
+        /// <summary>
+        /// Checks what the horizontal movement input is.
+        /// </summary>
 		public override float GetMovementInput ()
 		{
 			float movementInput = 0;

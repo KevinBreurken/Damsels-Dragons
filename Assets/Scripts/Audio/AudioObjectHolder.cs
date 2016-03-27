@@ -20,6 +20,38 @@ namespace Base.Audio {
         [HideInInspector]
         public AudioObject audioObject;
 
+        /// <summary>
+        /// Creates the AudioObject.
+        /// </summary>
+        public void CreateAudioObject () {
+
+            if (objectPrefab != null) {
+
+                audioObject = AudioManager.Instance.CreateAudioInstance(objectPrefab);
+
+            } else {
+
+                Debug.LogWarning("Audio Prefab not set");
+
+            }
+
+        }
+
+        public AudioObject GetAudioObject () {
+
+            if (audioObject != null) {
+
+                return audioObject;
+
+            } else {
+
+                Debug.LogError("AudioObject not created, is CreateAudiObject being used?");
+                return null;
+
+            }
+                
+        }
+
     }
 
 }
